@@ -1,0 +1,330 @@
+﻿<Window x:Class="Wpfmain.UtilWindows.InfoWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Wpfmain.UtilWindows"
+        xmlns:user="clr-namespace:Wpfmain.UserControls"
+        xmlns:conv="clr-namespace:Converters"
+        mc:Ignorable="d"
+		SizeChanged="InformationWindow_SizeChanged"
+		Loaded="InformationWindow_Loaded"
+		x:Name="InformationWindow"
+		PreviewKeyDown="popup1_PreviewKeyDown"
+		Background="Black"
+        WindowStartupLocation="Manual"
+	  WindowChrome.ResizeGripDirection="BottomRight"
+	  ResizeMode="CanResizeWithGrip"
+		Title="Information Window" Height="650" Width="1000"
+		MinHeight="450" MinWidth="700">
+
+	<Window.Resources>
+		<conv:ReduceByParamValue x:Key="ReduceByParamValue" />
+
+	</Window.Resources>
+	<Grid x:Name="ViiewerContainerGrid">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="30"/>
+			<RowDefinition Height="*"/>
+			<RowDefinition Height="90"/>
+			<RowDefinition Height="30"/>
+		</Grid.RowDefinitions>
+
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="330"/>
+			<ColumnDefinition Width="111*"/>
+			<ColumnDefinition Width="559*"/>
+		</Grid.ColumnDefinitions>
+
+		<!--#region header block-->
+
+		<TextBlock Grid.Row="0"  Grid.ColumnSpan="3"
+					Background="{StaticResource Red5}"
+					Foreground="{StaticResource White0}"
+					TextAlignment="Center"
+					FontSize="20"
+					FontWeight="Bold"
+					Text="Sql Tables / Stored Procedures System  : Help Viewer"/>
+
+		<!--#endregion header block-->
+
+		<!--#region Help files Listbox-->
+
+		<ListBox x:Name="TopicsListbox" 
+			Grid.Row="1" Grid.Column="0" 
+			BorderBrush="Red" BorderThickness="0 0 5 0"
+			Background="{StaticResource Black0}" 
+			Foreground="White"
+			FontWeight="DemiBold"
+			Height="{Binding ActualHeight, ElementName=ViiewerContainerGrid,
+					Converter={StaticResource	ReduceByParamValue},ConverterParameter=80}"
+			ItemsSource="{Binding HelpTopics}"
+			IsSynchronizedWithCurrentItem="True"
+			ScrollViewer.HorizontalScrollBarVisibility="Auto" 
+			ScrollViewer.CanContentScroll="True"
+			SelectionChanged="HelpListbox_SelectionChanged" 
+			ToolTipService.HasDropShadow="True"
+			ToolTipService.Placement="Mouse"
+			ToolTipService.BetweenShowDelay="5000"
+			ToolTipService.InitialShowDelay="2500"
+			ToolTipService.ShowDuration="2000"
+			ToolTip="Right Click for All available Options !"					 
+			ItemContainerStyle="{StaticResource SProcsListboxStyle}" 
+			Visibility="Visible" >
+			<ListBox.ItemTemplate>
+				<DataTemplate>
+					<TextBlock Text="{Binding}" Padding="2 0 0 0" 
+							Width="{Binding ActualWidth, ElementName=TopicsListbox ,
+								Converter={StaticResource	ReduceByParamValue},ConverterParameter=20}">
+
+					</TextBlock>
+				</DataTemplate>
+			</ListBox.ItemTemplate>
+		</ListBox>
+		<!--KeyDown="SProcsListbox_KeyDown"
+					PreviewMouseRightButtonDown="ExecShowContextMenu" 
+					 PreviewMouseRightButtonUp="DoHandled"
+					PreviewMouseLeftButtonDown="SProcsListbox_MouseLeftButtonDown"-->
+
+		<!--#endregion Help files Listbox-->
+
+		<!--********************-->
+		<!--#region ScrollDocument-->
+		<!--********************-->
+		<FlowDocumentScrollViewer x:Name="InfoPane" 
+				Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" 
+				FontSize =" 16"
+				Margin="1,2,0,2" 
+				Padding="10 0 0 10"
+				PreviewMouseRightButtonDown="InfoPane_PreviewMouseRightButtonDown"
+									  PreviewMouseLeftButtonDown="InfoPane_PreviewMouseLeftButtonDown"
+				Height="{Binding ActualHeight, ElementName=ViiewerContainerGrid,
+					Converter={StaticResource	ReduceByParamValue},ConverterParameter=90}"
+				HorizontalScrollBarVisibility="Hidden" 
+				VerticalScrollBarVisibility="Auto"
+				ToolTipService.HasDropShadow="True"
+				ToolTipService.Placement="Mouse"
+				ToolTipService.BetweenShowDelay="5000"
+				ToolTipService.InitialShowDelay="2500"
+				ToolTipService.ShowDuration="2000"
+				ToolTip="Select Help Topics for this complex window from the list of Topics shown at left !"
+				IsHitTestVisible="True"
+				ContextMenu="{x:Null}"
+				TextOptions.TextFormattingMode="Ideal"
+				PreviewMouseRightButtonUp="DoHandled"
+				TextOptions.TextRenderingMode="ClearType"
+				Visibility="Visible"/>
+		<!--PreviewMouseRightButtonDown="ExecShowContextMenu"-->
+		<!--#endregion ScrollDocument-->
+
+		<!--#region lowerpanel-->
+
+		<Grid Grid.Row="1" Grid.ColumnSpan="3" Background="Purple"  Grid.RowSpan="2" VerticalAlignment="Bottom" Height="90">
+			<!--#region FontSize-->
+
+			<TextBlock Height="25" Width="Auto"
+					HorizontalAlignment="Left" 
+	   				VerticalAlignment="Top"
+					Margin="50,5, 0 0" 
+					Text="INFORMATION VIEWER OPTIONS" 
+					FontSize="14"
+					FontWeight="Bold" 
+					Visibility="Visible" 
+					Foreground="{StaticResource Green8}" />
+			<!--PreviewMouseRightButtonDown="ExecShowContextMenu"-->
+
+			<TextBlock 
+					Height="25" 
+					Width="100" 
+					HorizontalAlignment="Left"
+					VerticalAlignment="Top"
+					Margin="100,25,0,0" 
+					Text="Select Font size" 
+					FontSize="14" 
+					Foreground="White" />
+			<!--PreviewMouseRightButtonDown="ExecShowContextMenu"-->
+
+			<!--PreviewMouseRightButtonDown="ExecShowContextMenu"-->
+			<ComboBox x:Name="FontsizeCombo" 					
+					HorizontalAlignment="Left" 
+					VerticalAlignment="Top"
+					  ItemsSource="{Binding FontSizes}"
+					Margin="115 50 0 0"
+					Height="30" Width="65"
+					FontSize="16" 
+					FontWeight="DemiBold" 
+					Background="{StaticResource Cyan3}"
+					Foreground="{StaticResource Black0}" 
+					MaxDropDownHeight="300"
+					SelectionChanged="FsizeCombo_SelectionChanged">
+				<ComboBox.ItemTemplate>
+					<DataTemplate>
+						<TextBlock Text="{Binding}" 
+								Background="{StaticResource Green3}"
+								Foreground="{StaticResource White0}" 
+								Padding="10 0 0 0" 
+								Height="30" 
+								Width="65" />
+					</DataTemplate>
+				</ComboBox.ItemTemplate>
+			</ComboBox>
+			<!--#endregion fontsize-->
+
+			<!--#region Text ColorCombo-->
+
+			<TextBlock 
+				Height="25"
+				Width="Auto" HorizontalAlignment="Left" 
+				VerticalAlignment="Top"
+				Margin="330,5,0,0"
+				Text="VIEWER TEXT COLOR" FontSize="14" FontWeight="Bold" Visibility="Visible"
+				Foreground="{StaticResource Green8}" />
+			<!--PreviewMouseRightButtonDown="ExecShowContextMenu"-->
+
+
+			<TextBlock Height="25" Width="Auto"
+					HorizontalAlignment="Left" 
+					VerticalAlignment="Top"
+					Margin="350 25 0 0" Text="Select Text Color" FontSize="14"
+					Foreground="White" />
+			<!--PreviewMouseRightButtonDown="ExecShowContextMenu"-->
+			<ComboBox x:Name="TextColorsCombo" 
+					HorizontalAlignment="Left" 
+					VerticalAlignment="Top"
+					Margin="330 50 0 0"
+					Height="30" Width="150" 
+					FontSize="16" FontWeight="DemiBold" 
+					Background="{StaticResource Red6}"
+					Foreground="{StaticResource White0}" 
+					MaxDropDownHeight="350"
+					SelectionChanged="TextColorsCombo_SelectionChanged">
+				<!--PreviewMouseRightButtonDown="ExecShowContextMenu"-->
+				<ComboBox.ItemTemplate>
+					<DataTemplate>
+						<TextBlock Text="{Binding}" Background="{StaticResource Red6}"
+								Foreground="{StaticResource White0}" 
+								   Padding="10 0 0 0" 
+								   Height="30" 
+								   Width="120" />
+					</DataTemplate>
+				</ComboBox.ItemTemplate>
+			</ComboBox>
+			<!--#endregion ColorCombo-->
+
+			<!--#region Bacckground ColorCombo-->
+
+			<TextBlock 
+				Height="25"
+				Width="Auto" HorizontalAlignment="Left" 
+				VerticalAlignment="Top"
+				Margin="530,5,0,0"
+				Text="VIEWER B/GROUND COLOR" FontSize="14" FontWeight="Bold" Visibility="Visible"
+				Foreground="{StaticResource Green8}" />
+			<!--PreviewMouseRightButtonDown="ExecShowContextMenu"-->
+
+			<TextBlock Height="25" Width="Auto"
+					HorizontalAlignment="Left" 
+					VerticalAlignment="Top"
+					Margin="550 25 0 0" Text="Select Background Color" FontSize="14"
+					Foreground="White" />
+			<!--PreviewMouseRightButtonDown="ExecShowContextMenu"-->
+			<ComboBox x:Name="backgroundCombo" 
+					HorizontalAlignment="Left" 
+					VerticalAlignment="Top"
+					Margin="550 50 0 0"
+					Height="30" Width="150" 
+					FontSize="16" FontWeight="DemiBold" 
+					Background="{StaticResource Orange3}"
+					Foreground="{StaticResource Black0}" 
+					MaxDropDownHeight="350"
+					SelectionChanged="bgoundCombo_SelectionChanged">
+				<!--PreviewMouseRightButtonDown="ExecShowContextMenu"-->
+				<ComboBox.ItemTemplate>
+					<DataTemplate>
+						<TextBlock Text="{Binding}" Background="{StaticResource Red6}"
+								Foreground="{StaticResource White0}" 
+								   Padding="10 0 0 0" 
+								   Height="30" 
+								   Width="120" />
+					</DataTemplate>
+				</ComboBox.ItemTemplate>
+			</ComboBox>
+			<!--#endregion background ColorCombo-->
+
+			<!--#region buttons-->
+
+			<Button x:Name="CloseBtn" 
+					Grid.Row="2" Grid.Column="1" 
+					HorizontalAlignment="Right" 
+					Height="45" Width="210" 
+					Foreground="White" 
+					BorderBrush="{StaticResource Cyan3}"							
+					BorderThickness="2"
+					Margin="0 0 15 0" 
+					FontSize="17"
+					FontWeight="Bold" 
+					Click="CloseBtn_Click" 
+					Style="{StaticResource DarkmodeButton}"
+					Content="Close Help Window">
+				<!--PreviewMouseRightButtonDown="ExecShowContextMenu"-->
+			</Button>
+
+			<!--#endregion buttons-->
+
+			<!--#endregion lowerpanel-->
+
+		</Grid>
+
+		<TextBlock Grid.Row="2"  Grid.ColumnSpan="3"
+				Background="{StaticResource Orange3}"
+				Foreground="{StaticResource Black0}"
+				   TextAlignment="Center"
+				   FontSize="20"
+				   FontWeight="DemiBold"
+				   Text="Current Topic : " Margin="0,90,0,0" Grid.RowSpan="2"/>
+
+		<!--<Popup Margin="0,0,0,0" Name="popup1" 
+				HorizontalAlignment="Left"   
+				VerticalAlignment="Top" 
+				Width="300" Height="Auto"			   
+			   Placement="MousePoint"	
+			   PreviewKeyDown="popup1_PreviewKeyDown"
+			   PlacementTarget="{Binding infoWin}"
+				>
+			<Border Height="{Binding Height, ElementName=popup1,Converter={StaticResource ReduceByParamValue},ConverterParameter=0}" 
+				Width="{Binding Width, ElementName=popup1,Converter={StaticResource ReduceByParamValue},ConverterParameter=0}"
+					BorderBrush="Red"
+					BorderThickness="2">
+			<StackPanel
+				Background="LightBlue" 	
+				Height="{Binding Height, ElementName=popup1,Converter={StaticResource ReduceByParamValue},ConverterParameter=5}" 
+				Width="{Binding Width, ElementName=popup1,Converter={StaticResource ReduceByParamValue},ConverterParameter=5}">
+
+					<TextBlock Name="popupTextBlock"   
+					Padding="5 5 5 5"
+					Background="LightBlue" 	
+					HorizontalAlignment="Stretch"
+					VerticalAlignment="Stretch"
+					TextWrapping="Wrap"
+					Text="{Binding popuptext}"/>
+					-->
+		<!--"To change the font size of this viewer, either use the dropdown in this window, or Ctrl + Mouse Scroll Wheel." />-->
+		<!--
+				
+				<Button Content="Close Pupup" 
+						Background="Red"
+						Foreground="White"
+						VerticalAlignment="Bottom"
+						Click="Closepopup_Click" 
+						/>  
+			</StackPanel>  
+			</Border>
+		</Popup>-->
+		<user:PopupUControl 
+			Visibility="Hidden"
+			Background="Red"
+			Panel.ZIndex="100">
+
+		</user:PopupUControl>
+	</Grid>
+</Window>

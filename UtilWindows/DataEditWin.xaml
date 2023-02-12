@@ -1,0 +1,632 @@
+﻿<Window x:Class="Wpfmain.UtilWindows.DataEditWin"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Wpfmain.UtilWindows"
+        xmlns:conv="clr-namespace:Converters"
+        mc:Ignorable="d"
+		Loaded="Window_Loaded"
+		KeyDown="Window_KeyDown"
+        Title="Sql Table data editing window" 
+		Height="470" Width="780" 
+		MinHeight="470" MinWidth="880" 
+		Topmost="True"
+		MaxHeight="470" MaxWidth="780" 
+		Background="{StaticResource Cyan2}">
+
+	<Window.Resources>
+		<conv:ReduceByParamValue x:Key="ReduceByValue" />
+
+		<!--#region // Edit panel data layout-->
+		<DataTemplate x:Key="EditPaneLayout">
+			<Grid>
+				<!--#region data fields-->
+
+				<!--#region Column1-->
+				<TextBox  x:Name="Data1"
+					Grid.Row="0" Grid.Column="0" 
+							Text="" 
+							TextChanged="UpdateNewDataList"
+							Width="270" Height="25"
+							Margin="130 0 0 0"
+							LostFocus= "Data_GotFocus"			
+							KeyDown="Data1_KeyDown"
+							TextOptions.TextFormattingMode="Display"
+							Background="White" Foreground="Black"/>
+				<TextBox  x:Name="Data2"
+					Grid.Row="1" Grid.Column="0" 
+							Text="" 
+							TextChanged="UpdateNewDataList"
+							Width="270" Height="25"
+							Margin="130 0 0 0"
+							KeyDown="Data1_KeyDown"
+							LostFocus= "Data_GotFocus"
+							Background="White" Foreground="Black"/>
+				<TextBox  x:Name="Data3"
+					Grid.Row="2" Grid.Column="0" 
+							Text="" 
+							TextChanged="UpdateNewDataList"
+							Width="270" Height="25"
+							KeyDown="Data1_KeyDown"
+							LostFocus="Data_GotFocus"
+							Margin="130 0 0 0"
+							Background="White" Foreground="Black"/>
+				<TextBox  x:Name="Data4"
+					Grid.Row="3" Grid.Column="0" 
+							Text="" 
+							TextChanged="UpdateNewDataList"
+							Width="270" Height="25"
+							KeyDown="Data1_KeyDown"
+							LostFocus= "Data_GotFocus"
+							Margin="130 0 0 0"
+							Background="White" Foreground="Black"/>
+				<TextBox  x:Name="Data5"
+					Grid.Row="4" Grid.Column="0" 
+							Text="" 
+							TextChanged="UpdateNewDataList"
+							Width="270" Height="25"
+							KeyDown="Data1_KeyDown"
+							LostFocus= "Data_GotFocus"
+							Margin="130 0 0 0"
+							Background="White" Foreground="Black"/>
+				<TextBox  x:Name="Data6"
+					Grid.Row="5" Grid.Column="0" 
+							Text="" 
+							TextChanged="UpdateNewDataList"
+							Width="270" Height="25"
+							KeyDown="Data1_KeyDown"
+							LostFocus= "Data_GotFocus"
+							Margin="130 0 0 0"
+							Background="White" Foreground="Black"/>
+				<TextBox  x:Name="Data7"
+					Grid.Row="6" Grid.Column="0" 
+							Text="" 
+							TextChanged="UpdateNewDataList"
+							KeyDown="Data1_KeyDown"
+							LostFocus= "Data_GotFocus"
+							Width="270" Height="25"
+							Margin="130 0 0 0"
+							Background="White" Foreground="Black"/>
+				<TextBox  x:Name="Data8"
+					Grid.Row="7" Grid.Column="0" 
+							Text="" 
+							TextChanged="UpdateNewDataList"
+							Width="270" Height="25"
+							KeyDown="Data1_KeyDown"
+							LostFocus="Data_GotFocus"
+							Margin="130 0 0 0"
+							Background="White" Foreground="Black"/>
+				<TextBox  x:Name="Data9"
+					Grid.Row="8" Grid.Column="0" 
+							Text="" 
+							TextChanged="UpdateNewDataList"
+							Width="270" Height="25"
+							KeyDown="Data1_KeyDown"
+							LostFocus= "Data_GotFocus"
+							Margin="130 0 0 0"
+							Background="White" Foreground="Black"/>
+				<TextBox  x:Name="Data10"
+					Grid.Row="9" Grid.Column="0" 
+							Text="" 
+							TextChanged="UpdateNewDataList"
+							Width="270" Height="25"
+							KeyDown="Data1_KeyDown"
+							LostFocus= "Data_GotFocus"
+							Margin="130 0 0 0"
+							Background="White" Foreground="Black"/>
+
+				<!--#endregion column1-->
+
+				<!--#region column2-->
+				<TextBox  x:Name="Data11"
+					Grid.Row="0" Grid.Column="1" 
+							Text="" 
+							Width="250" Height="25"
+							KeyDown="Data1_KeyDown"
+							LostFocus= "Data_GotFocus"
+							Margin="90 0 0 0"
+							Background="White" 
+							TextChanged="UpdateNewDataList"
+							Foreground="Black"/>
+				<TextBox  x:Name="Data12"
+					Grid.Row="1" Grid.Column="1" 
+							Text="" 
+							Width="250" Height="25"			
+							KeyDown="Data1_KeyDown"
+							LostFocus= "Data_GotFocus"
+							Margin="90 0 0 0"
+							Background="White" Foreground="Black"/>
+				<TextBox  x:Name="Data13"
+					Grid.Row="2" Grid.Column="1" 
+							Text="" 
+							TextChanged="UpdateNewDataList"
+							Width="250" Height="25"				
+							KeyDown="Data1_KeyDown"
+							LostFocus= "Data_GotFocus"
+							Margin="90 0 0 0"
+							Background="White" Foreground="Black"/>
+				<TextBox  x:Name="Data14"
+					Grid.Row="3" Grid.Column="1" 
+							Text="" 
+							TextChanged="UpdateNewDataList"
+							KeyDown="Data1_KeyDown"
+							LostFocus= "Data_GotFocus"
+							Width="250" Height="25"					
+							Margin="90 0 0 0"
+							Background="White" Foreground="Black"/>
+				<TextBox  x:Name="Data15"
+					Grid.Row="4" Grid.Column="1" 
+							Text="" 
+							TextChanged="UpdateNewDataList"
+							Width="250" Height="25"					
+							KeyDown="Data1_KeyDown"
+							LostFocus= "Data_GotFocus"
+								Margin="90 0 0 0"
+							Background="White" Foreground="Black"/>
+				<TextBox  x:Name="Data16"
+					Grid.Row="5" Grid.Column="1" 
+							Text="" 
+							TextChanged="UpdateNewDataList"
+							Width="250" Height="25"					
+							KeyDown="Data1_KeyDown"
+							LostFocus= "Data_GotFocus"
+							Margin="90 0 0 0"
+							Background="White" Foreground="Black"/>
+				<TextBox  x:Name="Data17"
+					Grid.Row="6" Grid.Column="1" 
+							Text="" 
+							TextChanged="UpdateNewDataList"
+							Width="250" Height="25"					
+							KeyDown="Data1_KeyDown"
+							LostFocus= "Data_GotFocus"
+								Margin="90 0 0 0"
+							Background="White" Foreground="Black"/>
+				<TextBox  x:Name="Data18"
+					Grid.Row="7" Grid.Column="1" 
+							Text="" 
+							TextChanged="UpdateNewDataList"
+							Width="250" Height="25"					
+							KeyDown="Data1_KeyDown"
+							LostFocus= "Data_GotFocus"
+								Margin="90 0 0 0"
+							Background="White" Foreground="Black"/>
+				<TextBox  x:Name="Data19"
+					Grid.Row="8" Grid.Column="1" 
+							Text="" 
+							TextChanged="UpdateNewDataList"
+							Width="250" Height="25"				
+							KeyDown="Data1_KeyDown"
+							LostFocus= "Data_GotFocus"
+							Margin="90 0 0 0"
+							Background="White" Foreground="Black"/>
+				<TextBox  x:Name="Data20"
+					Grid.Row="9" Grid.Column="1" 
+							Text="" 
+							TextChanged="UpdateNewDataList"
+							Width="250" Height="25"				
+							KeyDown="Data1_KeyDown"
+							LostFocus= "Data_GotFocus"
+							Margin="90 0 0 0"
+							Background="White" Foreground="Black"/>
+
+				<!--#endregion column2-->
+
+				<!--#endregion data fields-->
+
+		<!--#region Buttons etc-->
+				<Button x:Name="CloseBtn" Click="Closewin"  
+						Content="Close Window"
+						Grid.Row="10"
+						Grid.Column="1"
+						HorizontalAlignment="Right"
+							LostFocus= "Data_GotFocus"
+						Margin="0 0 50 0"
+						Width="130"
+						Height="40"
+						Style="{StaticResource DarkmodeButton}"/>
+				<!--Background="{StaticResource Red4}" 
+						Foreground="White"/>-->
+
+				<Button x:Name="PreviousRec" Click="PreviousRecord"  
+						Content="Previous Record"
+						Grid.Row="10"
+						Grid.Column="0"
+						HorizontalAlignment="Left"
+						Margin="10 0 0 0"
+						Width="120"
+						Height="40"
+						Style="{StaticResource DarkmodeButton}"/>
+				<!--Background="{StaticResource Green2}" 
+						Foreground="White"/>-->
+
+				<Button x:Name="NewRec" Click="AddRecord"  
+						Content="Add New Record"
+						Grid.Row="10"
+						Grid.Column="1"
+						HorizontalAlignment="Right"
+						Margin="0 0 190 0"
+						Width="130"
+						Height="40"
+						Style="{StaticResource DarkmodeButton}"/>
+				<!--Background="{StaticResource Green2}" 
+						Foreground="White"/>-->
+				<Button x:Name="NextRec" Click="NextRecord"  
+						Content="Next Record ->>"
+						Grid.Row="10"
+						Grid.Column="0"
+						HorizontalAlignment="Left"
+						Margin="140 0 00 0"
+							Width="130"
+						Height="40"
+						Style="{StaticResource DarkmodeButton}"/>
+				<!--Background="{StaticResource Green2}" 
+						Foreground="White"/>-->
+
+				<Button x:Name="SaveBtn" Click="Savedata"  
+						Content="Update Table !"
+						Grid.Row="10"
+						Grid.Column="0"
+						HorizontalAlignment="Left"
+						Margin="280 0 0 0"
+						Width="110"
+						Height="40"
+						Style="{StaticResource DarkmodeButton}"/>
+				<!--Background="{StaticResource Red4}" 
+						Foreground="White"/>-->
+
+				<Button x:Name="ResetBtn" Click="Resetdata"  
+						Content="Reset All Entries!"
+						Grid.Row="10"
+						Grid.Column="0"
+						Grid.ColumnSpan="2"
+						HorizontalAlignment="Left"
+						Margin="400 0 0 0"
+						Width="130"
+						Height="40"
+						Style="{StaticResource DarkmodeButton}"/>
+
+				<TextBlock x:Name="editprompt"
+					Grid.Row="11" 
+					Grid.ColumnSpan="2"
+					Width="{Binding ActualWidth, ElementName=EditContainer,
+					Converter={StaticResource ReduceByValue},ConverterParameter=35}" 
+					HorizontalAlignment="Left"
+					TextAlignment="Center"
+					Margin="0 0 0 0"
+						   Padding="0 4 0 0"
+					Background="{StaticResource Green3}"
+					Foreground="White"/>
+				
+			<!--#endregion Buttons etc-->
+
+			</Grid>
+		</DataTemplate>
+
+		<!--#endregion // Edit panel data layout-->
+		
+	</Window.Resources>
+	<Grid x:Name="EditContainer">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="35"/>
+			<RowDefinition Height="35"/>
+			<RowDefinition Height="35"/>
+			<RowDefinition Height="35"/>
+			<RowDefinition Height="35"/>
+			<RowDefinition Height="35"/>
+			<RowDefinition Height="35"/>
+			<RowDefinition Height="35"/>
+			<RowDefinition Height="35"/>
+			<RowDefinition Height="35"/>
+			<RowDefinition Height="50"/>
+			<RowDefinition Height="40"/>
+		</Grid.RowDefinitions>
+
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="450"/>
+			<ColumnDefinition Width="450"/>
+		</Grid.ColumnDefinitions>
+
+		<!--#region labels-->
+
+		<Label x:Name="label1" Content="field1" Grid.Row="0" Grid.Column="0" Padding="10 6 0 0"/>
+		<Label x:Name="label2" Content="field2" Grid.Row="1" Grid.Column="0" Padding="10 6 0 0"/>
+		<Label x:Name="label3" Content="field3" Grid.Row="2" Grid.Column="0" Padding="10 6 0 0"/>
+		<Label x:Name="label4" Content="field4" Grid.Row="3" Grid.Column="0" Padding="10 6 0 0"/>
+		<Label x:Name="label5" Content="field5" Grid.Row="4" Grid.Column="0" Padding="10 6 0 0"/>
+		<Label x:Name="label6" Content="field6" Grid.Row="5" Grid.Column="0" Padding="10 6 0 0"/>
+		<Label x:Name="label7" Content="field7" Grid.Row="6" Grid.Column="0" Padding="10 6 0 0"/>
+		<Label x:Name="label8" Content="field8" Grid.Row="7" Grid.Column="0" Padding="10 6 0 0"/>
+		<Label x:Name="label9" Content="field9" Grid.Row="8" Grid.Column="0" Padding="10 6 0 0"/>
+		<Label x:Name="label10" Content="field10" Grid.Row="9" Grid.Column="0" Padding="10 6 0 0"/>
+
+		<Label x:Name="label11" Content="field11" Grid.Row="0" Grid.Column="1" Padding="10 6 0 0"/>
+		<Label x:Name="label12" Content="field12" Grid.Row="1" Grid.Column="1" Padding="10 6 0 0"/>
+		<Label x:Name="label13" Content="field13" Grid.Row="2" Grid.Column="1" Padding="10 6 0 0"/>
+		<Label x:Name="label14" Content="field14" Grid.Row="3" Grid.Column="1" Padding="10 6 0 0"/>
+		<Label x:Name="label15" Content="field15" Grid.Row="4" Grid.Column="1" Padding="10 6 0 0"/>
+		<Label x:Name="label16" Content="field16" Grid.Row="5" Grid.Column="1" Padding="10 6 0 0"/>
+		<Label x:Name="label17" Content="field17" Grid.Row="6" Grid.Column="1" Padding="10 6 0 0"/>
+		<Label x:Name="label18" Content="field18" Grid.Row="7" Grid.Column="1" Padding="10 6 0 0"/>
+		<Label x:Name="label19" Content="field19" Grid.Row="8" Grid.Column="1" Padding="10 6 0 0"/>
+		<Label x:Name="label20" Content="field20" Grid.Row="9" Grid.Column="1" Padding="10 6 0 0"/>
+		<!--#endregion labels-->
+
+		<!--#region data fields-->
+
+		<!--#region column1-->
+
+		<TextBox  x:Name="Data1"
+			Grid.Row="0" Grid.Column="0" 
+					Text="" 
+					TextChanged="UpdateNewDataList"
+					Width="270" Height="25"
+					Margin="130 0 0 0"
+					LostFocus= "Data_GotFocus"			
+					KeyDown="Data1_KeyDown"
+					TextOptions.TextFormattingMode="Display"
+					Background="White" Foreground="Black"/>
+		<TextBox  x:Name="Data2"
+			Grid.Row="1" Grid.Column="0" 
+					Text="" 
+					TextChanged="UpdateNewDataList"
+					Width="270" Height="25"
+					Margin="130 0 0 0"
+					KeyDown="Data1_KeyDown"
+					LostFocus= "Data_GotFocus"
+					Background="White" Foreground="Black"/>
+		<TextBox  x:Name="Data3"
+			Grid.Row="2" Grid.Column="0" 
+					Text="" 
+					TextChanged="UpdateNewDataList"
+					Width="270" Height="25"
+					KeyDown="Data1_KeyDown"
+					LostFocus="Data_GotFocus"
+					Margin="130 0 0 0"
+					Background="White" Foreground="Black"/>
+		<TextBox  x:Name="Data4"
+			Grid.Row="3" Grid.Column="0" 
+					Text="" 
+					TextChanged="UpdateNewDataList"
+					Width="270" Height="25"
+					KeyDown="Data1_KeyDown"
+					LostFocus= "Data_GotFocus"
+					Margin="130 0 0 0"
+					Background="White" Foreground="Black"/>
+		<TextBox  x:Name="Data5"
+			Grid.Row="4" Grid.Column="0" 
+					Text="" 
+					TextChanged="UpdateNewDataList"
+					Width="270" Height="25"
+					KeyDown="Data1_KeyDown"
+					LostFocus= "Data_GotFocus"
+					Margin="130 0 0 0"
+					Background="White" Foreground="Black"/>
+		<TextBox  x:Name="Data6"
+			Grid.Row="5" Grid.Column="0" 
+					Text="" 
+					TextChanged="UpdateNewDataList"
+					Width="270" Height="25"
+					KeyDown="Data1_KeyDown"
+					LostFocus= "Data_GotFocus"
+					Margin="130 0 0 0"
+					Background="White" Foreground="Black"/>
+		<TextBox  x:Name="Data7"
+			Grid.Row="6" Grid.Column="0" 
+					Text="" 
+					TextChanged="UpdateNewDataList"
+					KeyDown="Data1_KeyDown"
+					LostFocus= "Data_GotFocus"
+					Width="270" Height="25"
+					Margin="130 0 0 0"
+					Background="White" Foreground="Black"/>
+		<TextBox  x:Name="Data8"
+			Grid.Row="7" Grid.Column="0" 
+					Text="" 
+					TextChanged="UpdateNewDataList"
+					Width="270" Height="25"
+					KeyDown="Data1_KeyDown"
+					LostFocus="Data_GotFocus"
+					Margin="130 0 0 0"
+					Background="White" Foreground="Black"/>
+		<TextBox  x:Name="Data9"
+			Grid.Row="8" Grid.Column="0" 
+					Text="" 
+					TextChanged="UpdateNewDataList"
+					Width="270" Height="25"
+					KeyDown="Data1_KeyDown"
+					LostFocus= "Data_GotFocus"
+					Margin="130 0 0 0"
+					Background="White" Foreground="Black"/>
+		<TextBox  x:Name="Data10"
+			Grid.Row="9" Grid.Column="0" 
+					Text="" 
+					TextChanged="UpdateNewDataList"
+					Width="270" Height="25"
+					KeyDown="Data1_KeyDown"
+					LostFocus= "Data_GotFocus"
+					Margin="130 0 0 0"
+					Background="White" Foreground="Black"/>
+
+		<!--#endregion column1-->
+
+		<!--#region column2-->
+		<TextBox  x:Name="Data11"
+			Grid.Row="0" Grid.Column="1" 
+					Text="" 
+					Width="250" Height="25"
+					KeyDown="Data1_KeyDown"
+					LostFocus= "Data_GotFocus"
+					Margin="90 0 0 0"
+					Background="White" 
+					TextChanged="UpdateNewDataList"
+					Foreground="Black"/>
+		<TextBox  x:Name="Data12"
+			Grid.Row="1" Grid.Column="1" 
+					Text="" 
+					Width="250" Height="25"			
+					KeyDown="Data1_KeyDown"
+					LostFocus= "Data_GotFocus"
+					Margin="90 0 0 0"
+					Background="White" Foreground="Black"/>
+		<TextBox  x:Name="Data13"
+			Grid.Row="2" Grid.Column="1" 
+					Text="" 
+					TextChanged="UpdateNewDataList"
+					Width="250" Height="25"				
+					KeyDown="Data1_KeyDown"
+					LostFocus= "Data_GotFocus"
+					Margin="90 0 0 0"
+					Background="White" Foreground="Black"/>
+		<TextBox  x:Name="Data14"
+			Grid.Row="3" Grid.Column="1" 
+					Text="" 
+					TextChanged="UpdateNewDataList"
+					KeyDown="Data1_KeyDown"
+					LostFocus= "Data_GotFocus"
+					Width="250" Height="25"					
+					Margin="90 0 0 0"
+					Background="White" Foreground="Black"/>
+		<TextBox  x:Name="Data15"
+			Grid.Row="4" Grid.Column="1" 
+					Text="" 
+					TextChanged="UpdateNewDataList"
+					Width="250" Height="25"					
+					KeyDown="Data1_KeyDown"
+					LostFocus= "Data_GotFocus"
+						Margin="90 0 0 0"
+					Background="White" Foreground="Black"/>
+		<TextBox  x:Name="Data16"
+			Grid.Row="5" Grid.Column="1" 
+					Text="" 
+					TextChanged="UpdateNewDataList"
+					Width="250" Height="25"					
+					KeyDown="Data1_KeyDown"
+					LostFocus= "Data_GotFocus"
+					Margin="90 0 0 0"
+					Background="White" Foreground="Black"/>
+		<TextBox  x:Name="Data17"
+			Grid.Row="6" Grid.Column="1" 
+					Text="" 
+					TextChanged="UpdateNewDataList"
+					Width="250" Height="25"					
+					KeyDown="Data1_KeyDown"
+					LostFocus= "Data_GotFocus"
+						Margin="90 0 0 0"
+					Background="White" Foreground="Black"/>
+		<TextBox  x:Name="Data18"
+			Grid.Row="7" Grid.Column="1" 
+					Text="" 
+					TextChanged="UpdateNewDataList"
+					Width="250" Height="25"					
+					KeyDown="Data1_KeyDown"
+					LostFocus= "Data_GotFocus"
+						Margin="90 0 0 0"
+					Background="White" Foreground="Black"/>
+		<TextBox  x:Name="Data19"
+			Grid.Row="8" Grid.Column="1" 
+					Text="" 
+					TextChanged="UpdateNewDataList"
+					Width="250" Height="25"				
+					KeyDown="Data1_KeyDown"
+					LostFocus= "Data_GotFocus"
+					Margin="90 0 0 0"
+					Background="White" Foreground="Black"/>
+		<TextBox  x:Name="Data20"
+			Grid.Row="9" Grid.Column="1" 
+					Text="" 
+					TextChanged="UpdateNewDataList"
+					Width="250" Height="25"				
+					KeyDown="Data1_KeyDown"
+					LostFocus= "Data_GotFocus"
+					Margin="90 0 0 0"
+					Background="White" Foreground="Black"/>
+
+		<!--#endregion column2-->
+
+		<!--#endregion data fields-->
+
+		<Button x:Name="CloseBtn" Click="Closewin"  
+				Content="Close Window"
+				Grid.Row="10"
+				Grid.Column="1"
+				HorizontalAlignment="Right"
+					LostFocus= "Data_GotFocus"
+				Margin="0 0 50 0"
+				Width="130"
+				Height="40"
+				Style="{StaticResource DarkmodeButton}"/>
+		<!--Background="{StaticResource Red4}" 
+				Foreground="White"/>-->
+
+		<Button x:Name="PreviousRec" Click="PreviousRecord"  
+				Content="Previous Record"
+				Grid.Row="10"
+				Grid.Column="0"
+				HorizontalAlignment="Left"
+				Margin="10 0 0 0"
+				Width="120"
+				Height="40"
+				Style="{StaticResource DarkmodeButton}"/>
+		<!--Background="{StaticResource Green2}" 
+				Foreground="White"/>-->
+
+		<Button x:Name="NewRec" Click="AddRecord"  
+				Content="Add New Record"
+				Grid.Row="10"
+				Grid.Column="1"
+				HorizontalAlignment="Right"
+				Margin="0 0 190 0"
+				Width="130"
+				Height="40"
+				Style="{StaticResource DarkmodeButton}"/>
+		<!--Background="{StaticResource Green2}" 
+				Foreground="White"/>-->
+		<Button x:Name="NextRec" Click="NextRecord"  
+				Content="Next Record ->>"
+				Grid.Row="10"
+				Grid.Column="0"
+				HorizontalAlignment="Left"
+				Margin="140 0 00 0"
+					Width="130"
+				Height="40"
+				Style="{StaticResource DarkmodeButton}"/>
+		<!--Background="{StaticResource Green2}" 
+				Foreground="White"/>-->
+
+		<Button x:Name="SaveBtn" Click="Savedata"  
+				Content="Update Table !"
+				Grid.Row="10"
+				Grid.Column="0"
+				HorizontalAlignment="Left"
+				Margin="280 0 0 0"
+				Width="110"
+				Height="40"
+				Style="{StaticResource DarkmodeButton}"/>
+		<!--Background="{StaticResource Red4}" 
+				Foreground="White"/>-->
+
+		<Button x:Name="ResetBtn" Click="Resetdata"  
+				Content="Reset All Entries!"
+				Grid.Row="10"
+				Grid.Column="0"
+				Grid.ColumnSpan="2"
+				HorizontalAlignment="Left"
+				Margin="400 0 0 0"
+				Width="130"
+				Height="40"
+				Style="{StaticResource DarkmodeButton}"/>
+
+		<TextBlock x:Name="editprompt"
+			Grid.Row="11" 
+			Grid.ColumnSpan="2"
+			Width="{Binding ActualWidth, ElementName=EditContainer,
+			Converter={StaticResource ReduceByValue},ConverterParameter=35}" 
+			HorizontalAlignment="Left"
+			TextAlignment="Center"
+			Margin="0 0 0 0"
+				   Padding="0 4 0 0"
+			Background="{StaticResource Green3}"
+			Foreground="White"/>
+	</Grid>
+</Window>

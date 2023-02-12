@@ -1,0 +1,58 @@
+﻿<Application x:Class="Wpfmain.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:Wpfmain"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+
+            <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+
+            <ResourceDictionary.MergedDictionaries>
+                <!--<ResourceDictionary Source="pack://application:,,,/CommonControls;component/Themes/GeneralStyle.xaml" />-->
+                <!--<ResourceDictionary Source="pack://application:,,,/CommonControls;component/Themes/GeneralStyle.xaml" />-->
+                <ResourceDictionary Source="Dicts\ColorsDictionary.xaml" />
+                <ResourceDictionary Source="Dicts\ButtonsMaster.xaml" />
+               <ResourceDictionary Source="Dicts\DataGridStyles.xaml" />
+                <ResourceDictionary Source="Dicts\AppButtonsDictionary.xaml" />
+                <ResourceDictionary Source="Dicts\ComboBoxStyles.xaml" />
+                <ResourceDictionary Source="Dicts\Storyboards.xaml" />
+                <ResourceDictionary Source="Dicts\TreeViewDictionary.xaml" />
+                <ResourceDictionary Source="Dicts\MenuStyle.xaml" />
+                <!--<ResourceDictionary Source="StylesDictionary.xaml" />-->
+                <!--<ResourceDictionary Source="Wpfmain\ListBoxColorControlAP.xaml" />-->
+                <!--<ResourceDictionary Source="Dicts\StylesDictionary.xaml" />-->
+                <!--<ResourceDictionary Source="DataTemplates\ContextMenuResources.xaml" />
+                <ResourceDictionary Source="Styles\StylesDictonary.xaml" />
+                  <ResourceDictionary Source="DataTemplates\CustomerDataTemplates.xaml" />
+                <ResourceDictionary Source="DataTemplates\BankDataTemplates.xaml" />
+                <ResourceDictionary Source="DataTemplates\GenericDataTemplates.xaml" />
+                <ResourceDictionary Source="DataTemplates\NWDataTemplates.xaml" />
+                <ResourceDictionary Source="DataTemplates\PublishersTemplates.xaml" />
+                <ResourceDictionary Source="DataTemplates\NWDataTemplates.xaml" />
+                <ResourceDictionary Source="Menus\ContextMenuTemplates.xaml" />
+                <ResourceDictionary Source="ViewModels\MvvmStyles.xaml" />
+                <ResourceDictionary Source="Themes\ThemesDictionary.xaml" />
+                <ResourceDictionary Source="ViewModels\ListBoxViewStyles.xaml" />
+                <ResourceDictionary Source="ViewModels\MenuStyles.xaml" />-->
+                <!--<ResourceDictionary Source="Themes\ControlColours.xaml"/>-->
+                <ResourceDictionary Source=".\Dicts\BankGridStyle.xaml" />
+                <ResourceDictionary Source="DarkMode.xaml" />
+
+                <!--<ResourceDictionary Source="Themes\DarkTheme.xaml"/>-->
+                <!--<ResourceDictionary Source="Themes\DeepDark.xaml"/>-->
+                <!--<ResourceDictionary Source="Themes\LighTheme.xaml"/>-->
+                <!--<ResourceDictionary Source="Themes\luna.metallic.xaml"/>-->
+                <!--<ResourceDictionary Source="Themes\RedBlackTheme.xaml"/>
+                <ResourceDictionary Source="Themes\SoftDark.xaml"/>
+                <ResourceDictionary Source="Themes\VeryDarkTheme.xaml"/>
+                <ResourceDictionary Source="Themes\ColourfulLightTheme.xaml"/>-->
+                <!--<ResourceDictionary Source="Themes\classic.xaml"/>.-->
+                <!--
+                <ResourceDictionary Source="Themes\aero.NormalColor.xaml"/>-->
+                <!--<ResourceDictionary Source="/PresentationFramework.Aero;component/themes/Aero.NormalColor.xaml"/>-->
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary >
+
+    </Application.Resources>
+</Application>

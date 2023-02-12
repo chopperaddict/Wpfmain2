@@ -1,0 +1,33 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Wpfmain.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="ConnectionString" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Server=DESKTOP-BEQTQ1J;Database=IAN1;Integrated Security=True;Encrypt=False;User Id=DESKTOP-BEQTQ1J\ianch;</Value>
+    </Setting>
+    <Setting Name="NorthwindConnectionString" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Data Source=DESKTOP-BEQTQ1J;Initial Catalog=Northwind;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"</Value>
+    </Setting>
+    <Setting Name="Machine_ID" Type="System.String" Scope="User">
+      <Value Profile="(Default)">DESKTOP-BEQTQ1J\ianch</Value>
+    </Setting>
+    <Setting Name="AdventureWorks2019" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Data Source=DESKTOP-BEQTQ1J;Initial Catalog=AdventureWorks2019;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"</Value>
+    </Setting>
+    <Setting Name="BankSysConnectionString" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Data Source=DESKTOP-BEQTQ1J;Initial Catalog=IAN1;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"</Value>
+    </Setting>
+    <Setting Name="ReplaceFldNames" Type="System.String" Scope="User">
+      <Value Profile="(Default)">TRUE</Value>
+    </Setting>
+    <Setting Name="UseFlowDoc" Type="System.String" Scope="User">
+      <Value Profile="(Default)">TRUE</Value>
+    </Setting>
+    <Setting Name="UseMagnify" Type="System.String" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="AppRootPath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">W:\\WpfMain\bin\\Debug\\</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

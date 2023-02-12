@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Wpfmain": {
+      "commandName": "Project",
+      "sqlDebugging": true
+    }
+  }
+}

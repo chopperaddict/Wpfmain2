@@ -1,0 +1,112 @@
+﻿<Window x:Class="Wpfmain.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        xmlns:local="clr-namespace:Wpfmain"
+        mc:Ignorable="d"
+	  PreviewKeyDown="Window_PreviewKeyDown"
+        Title="MainWin" Height="285" Width="630"
+		MaxHeight="285" MaxWidth="630"
+		WindowStartupLocation="Manual"
+	  WindowChrome.ResizeGripDirection="BottomRight"
+	  ResizeMode="CanResizeWithGrip"
+        Topmost="True"
+        FontSize="12"
+		Top="50"
+		Left="450"
+	>
+	<Window.Background>
+		<LinearGradientBrush  StartPoint="1,0" EndPoint="0,0">
+			<GradientStop Offset="0" Color="#FFAAAAAA" />
+			<GradientStop Offset="0.3" Color="#FF6B8E95" />
+			<GradientStop Offset="0.609" Color="#FF6B8E95" />
+			<GradientStop Offset="1" Color="#FF14A7C1" />
+		</LinearGradientBrush>
+	</Window.Background>
+
+	<Window.Resources>
+		<Geometry x:Key="Checkmark" >F1 M 10.0,1.2 L 4.7,9.1 L 4.5,9.1 L 0,5.2 L 1.3,3.5 L 4.3,6.1L 8.3,0 L 10.0,1.2 Z</Geometry>
+	</Window.Resources>
+
+	<Grid Margin="0,0,-1,6">
+		<Button x:Name="button1" Content="Data Grid 1" HorizontalAlignment="Left" Margin="20,26,0,0" 
+			  VerticalAlignment="Top" Height="40" Width="100"  
+			  Foreground="{StaticResource White0}" Template="{StaticResource GradientButtonTemplateBlue}"/>
+		<Button x:Name="button2" Content="List Box/View" HorizontalAlignment="Left" Margin="140,26,0,0" 
+			  VerticalAlignment="Top" Height="40" Width="102" 
+			Foreground="{StaticResource White0}" Template="{StaticResource GradientButtonTemplateBlue}"/>
+		<Button x:Name="button3" Content="Tree View" HorizontalAlignment="Left" Margin="260,28,0,0" 
+			  VerticalAlignment="Top" Height="40" Width="102" 
+			Foreground="{StaticResource White0}" Template="{StaticResource GradientButtonTemplateBlue}"/>
+		<Button x:Name="button4" Content="Dummy" HorizontalAlignment="Left" Margin="380,26,0,0" 
+			  VerticalAlignment="Top" Height="40" Width="100"  
+			Foreground="{StaticResource White0}" Template="{StaticResource GradientButtonTemplateBlue}"/>
+		<Button x:Name="button5" HorizontalAlignment="Left" Margin="376,134,0,0" 
+			  VerticalAlignment="Top" Height="47" Width="223"   FontWeight="DemiBold" Click="button5_Click"
+			Foreground="{StaticResource White0}" Template="{StaticResource GradientButtonTemplateBlue}" >
+			<Button.Content>
+				<TextBlock Text="Stored Procedures Processing and SQL Table DataGrid Access System"   
+						   Foreground="{StaticResource White0}"
+						   FontWeight="DemiBold"
+						   FontSize="14"
+						   TextAlignment="Center"
+						   Margin="0 2 0 0"
+							   TextWrapping="Wrap" 
+						   Height="50" Width="213"/>
+			</Button.Content>
+		</Button>
+		<Button x:Name="button6" Content="Mullti Objects" HorizontalAlignment="Left" Margin="18,81,0,0" 
+			  VerticalAlignment="Top" Height="40" Width="100"   
+			  Foreground="{StaticResource ResourceKey=White0}" Template="{StaticResource GradientButtonTemplateBlue}"/>
+		<Button x:Name="button7" Content="User Control" HorizontalAlignment="Left" Margin="138,81,0,0" 
+			  VerticalAlignment="Top" Height="40" Width="102"  
+			Foreground="{StaticResource White0}" Template="{StaticResource GradientButtonTemplateBlue}"/>
+		<Button x:Name="button8" Content="Dummy" HorizontalAlignment="Left" Margin="258,83,0,0" 
+			  VerticalAlignment="Top" Height="40" Width="102" 
+			Foreground="{StaticResource White0}" Template="{StaticResource GradientButtonTemplateBlue}"/>
+		<Button x:Name="button9" Content="Dummy" HorizontalAlignment="Left" Margin="378,81,0,0" 
+			  VerticalAlignment="Top" Height="40" Width="100" 
+			Foreground="{StaticResource White0}" Template="{StaticResource GradientButtonTemplateBlue}"/>
+		<Button x:Name="button10" Content="Close" HorizontalAlignment="Left" Margin="497,26,0,0" 
+			VerticalAlignment="Top" Height="40" Width="102"  Click="button10_Click"
+			Foreground="{StaticResource White0}" Template="{StaticResource HorizontalGradientTemplateRed}" />
+
+		<Button x:Name="button11" Content="Dummy" HorizontalAlignment="Left" Margin="16,140,0,0" 
+      VerticalAlignment="Top" Height="40" Width="100"  
+      Foreground="{StaticResource White0}" Template="{StaticResource GradientButtonTemplateBlue}"/>
+		<Button x:Name="button12" Content="Dummy" HorizontalAlignment="Left" Margin="136,140,0,0" 
+            VerticalAlignment="Top" Height="40" Width="102" 
+            Foreground="{StaticResource White0}" Template="{StaticResource GradientButtonTemplateBlue}"/>
+		<Button x:Name="button13" Content="4 way Splitter" HorizontalAlignment="Left" Margin="256,140,0,0" 
+            VerticalAlignment="Top" Height="40" Width="102" 
+            Foreground="{StaticResource White0}" Template="{StaticResource GradientButtonTemplateBlue}"/>
+		<Button x:Name="button14" Content="Inter Processing" HorizontalAlignment="Left" Margin="376,138,0,0" 
+            VerticalAlignment="Top" Height="40" Width="100" 
+            Foreground="{StaticResource White0}" Template="{StaticResource GradientButtonTemplateBlue}"
+				Visibility="Hidden"/>
+		<Button x:Name="button15" Content="Tracking log" HorizontalAlignment="Left" Margin="497,82,0,0" 
+            VerticalAlignment="Top" Height="40" Width="102" 
+            Foreground="{StaticResource White0}" Template="{StaticResource GradientButtonTemplateBlue}" />
+		<Button x:Name="button16" Content="Dark Mode Grids" HorizontalAlignment="Left" Margin="497,196,0,0" 
+            VerticalAlignment="Top" Height="40" Width="102" 
+            Foreground="{StaticResource White0}" Template="{StaticResource HorizontalGradientTemplateGreen}" />
+		<Button x:Name="button17" Content="button" HorizontalAlignment="Left" Margin="375,195,0,0" 
+            VerticalAlignment="Top" Height="40" Width="102" 
+            Foreground="{StaticResource White0}" Template="{StaticResource HorizontalGradientTemplateYellow}" />
+
+		<Button x:Name="button18" Content="Dummy" HorizontalAlignment="Left" Margin="15,197,0,0" 
+            VerticalAlignment="Top" Height="40" Width="102" 
+            Foreground="{StaticResource White0}" Template="{StaticResource GradientButtonTemplateBlue}" />
+		<Button x:Name="button19" Content="Dummy" HorizontalAlignment="Left" Margin="136,197,0,0" 
+            VerticalAlignment="Top" Height="40" Width="102" 
+            Foreground="{StaticResource White0}" Template="{StaticResource GradientButtonTemplateBlue}" />
+		<Button x:Name="button20" Content="Tab Viewer" HorizontalAlignment="Left" Margin="257,197,0,0" 
+            VerticalAlignment="Top" Height="40" Width="102" 
+            Foreground="{StaticResource White0}" Template="{StaticResource GradientButtonTemplateBlue}" />
+		<Button x:Name="button21" Content="Yield example" HorizontalAlignment="Left" Margin="375,197,0,0" 
+            VerticalAlignment="Top" Height="40" Width="102" 
+            Foreground="{StaticResource White0}" Template="{StaticResource GradientButtonTemplateBlue}" />
+
+	</Grid>
+</Window>

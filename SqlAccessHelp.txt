@@ -1,0 +1,14 @@
+﻿SQL database tables Access/Processing Information
+=================================
+(This functionality) of the window allows you to view and access any & all SQl Db Tables available (from Microsft SQL server) in a truly generic manner that makes using it pretty well transparent.
+
+The most obvious task is to see the data contained in the tables, and this is the default opening view if you select SQL Tables from the Vew Menu.
+
+It is made up of two panels, one above the other, with an adjustable slider between them to allow you to adjust the height of either panel to suit your needs.
+
+The lower panel is the Data Edit panel, which allows you to make changes to the data and to update the table in the database directly and immediately. You can also add new records to the table
+
+The upper part (the datagrid) shows the data in (correctly) named columns for ALL the records in the selected table. You can switch betwenn tables using the dropdown at the bottom of the window, which lists all SQL tables in the current database. You can use the mouse scroll or the keyboard navigation keys to move through all the records. As you move, the data for the currently selected record is displayed in the Data Editing panel below (when visible).
+
+If you have the Edit Panel either hidden or not showing at it's full height, then when you Dbl-Click any record in the datagrid it will automatically open at its full height in the lower part of the window to allow instant access to the data in that record.
+

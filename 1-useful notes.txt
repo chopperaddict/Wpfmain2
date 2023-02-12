@@ -1,0 +1,2261 @@
+﻿================================================================================================
+	How to Convert an IEnumerable<dynamic> collection into an ObservableCollection<GenericClass>
+=========================================================================================================
+ 
+ CreateCollectionFromDynamic(dyn);
+ ================================================================================================
+	How to COLOR  THE BACKGROUND OF A COMBOBOX (OR OTHER SIMILAR CONTROL)
+	Using a  special converter : SetMenuColorExampleConverter 
+	that uses the system's solidcolorbrush name combo entry as its input
+================================================================================================
+				<!--THIS ACTUALLY WORKS SO ALL MENY ENTRIY BACKGROUNDS ARE 
+					COLORED TO MATCH THE SOLIDCOLORBRUSH COLOR NAME-->
+					<ComboBox.ItemTemplate>
+						<DataTemplate>
+							<TextBlock 
+								Text="{Binding}" 
+									Foreground="{StaticResource Black3}" 
+									Padding="10 0 0 0" 
+									Height="25" 
+									Width="120" >
+								<TextBlock.Background>
+									<MultiBinding Converter="{StaticResource SetMenuColorConverter}">
+									<!--// Important : This line passes the  current object to the converter-->
+									<Binding />
+										<Binding Path="Background" ElementName="SProcsViewer"/>
+										<Binding Path="BorderBrush" ElementName="SProcsViewer"/>
+									</MultiBinding>
+								</TextBlock.Background>
+							</TextBlock>
+						</DataTemplate>
+					</ComboBox.ItemTemplate>
+				</ComboBox>
+
+				See also Utills2.GetAllSysBrushColors ( Dictionary<string, SolidColorBrush> colordict )
+				which is the method used to get ALL available colors from the application using Reflection !!!
+
+================================================================================================
+How to show data in design window 
+================================================================================================
+multi convert
+		// just add this line to the control properties
+		d:ItemsSource="{d:SampleData ItemCount=5}"
+
+================================================================================================
+How to get Dictionary  values
+================================================================================================
+
+	object value = null;		
+	DictionaryName. TryGetValue ( key, out value);
+	// test  value for non null and use it.
+
+=================================================================================================
+// How to get full screen size accurately
+=================================================================================================
+SystemParameters.VirtualScreenWidth
+		SystemParameters.VirtualScreenHeight
+=================================================================================================
+	// How to get full debug listing of bindng conditions
+=================================================================================================
+		add  to file :
+		xmlns:diagnostics=”clr-namespace:System.Diagnostics;assembly=WindowsBase”
+
+		someproblemproperty="{Binding Path=Friends,
+                            Mode=TwoWay,   
+                            diagnostics:PresentationTraceSources.TraceLevel=High}"
+      
+==============================================================================================================
+	// How to stop default Context Menu from appearing (like in scrollviewers etc)
+===============================================================================================================
+				In Control's properties add :
+				ContextMenu="{x:Null}"
+
+==============================================================================================================
+	// How to access ConfigurationManager Sql Connectioin strings
+	// Not correctly implemented  -- YET !!!!
+===============================================================================================================
+            <connectionStrings>
+           var dbString = ConfigurationManager . ConnectionStrings [ "Ian1" ] . ConnectionString;
+            </connectionStrings>
+			<AppSettings>
+		   var AppPath = ConfigurationManager . AppSettings[ "NewWpfDev-C" ];
+			</AppSettings>
+
+
+==============================================================================================================
+	// How to fix resource no found in VS2022
+	=============================================================================================================
+setx VSXAML_DISABLE_ON_DEMAND_RESOURCE_VALUES 1
+
+==============================================================================================================
+	// How to use Themes ???
+===============================================================================================================
+Support for themes in a WPF application must be explicitly enabled by adding the following attribute to the assembly:
+
+[assembly: ThemeInfo(
+  ResourceDictionary.None,
+  ResourceDictionaryLocation.SourceAssembly
+ )]
+This will instruct WPF to look for an embedded resource file called themes\generic.xaml to determine the default look of the application's controls.
+==============================================================================================================
+	// How to use a MultiBinding to format output of a field
+===============================================================================================================
+<TextBlock>
+    <TextBlock.Text>
+        <MultiBinding StringFormat="{}{0} {1}">
+            <Binding Path="User.Forename"/>
+            <Binding Path="User.Surname"/>
+        </MultiBinding>
+    </TextBlock.Text>
+</TextBlock>
+
+Normal MultiBinding
+
+                <!--// The line <Binding />  will pass the current DataContext to the converter, 
+                    //plus whatever value is in the Converterparameter as a (parseable) string-->
+                    <!--//the 2nd line passes whatever the value is in the (MUST BE) Ancestor (Window or UserControl etc) 
+                    //variable or property or D.P <BankAcctDetails> (Actually another UserControl declared in this parent), -->
+                    <Button.CommandParameter>
+                        <MultiBinding Converter="{StaticResource AddTwoValuesConverter}" ConverterParameter="10">
+                            <Binding  />
+                            <Binding RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=Window}" Path="BankAcDetails" />
+                            <!--<Binding Path="HostWin" ElementName="Width"/>-->
+                            </MultiBinding>
+
+==============================================================================================================
+	// my snippets
+===============================================================================================================
+// useful for ICommands
+icmd : generates
+        private ICommand commandname;
+        public ICommand commandname
+        {
+            get
+            {
+                if (commandname == null)
+                    commandname = new RelayCommand(ExecuteMethod, CanExecuteMethod));
+                return commandname;
+            }
+        }              
+
+earg : generates 
+           if (arg == null)
+                return true;
+            else return (bool)arg;
+ 
+==============================================================================================================
+	// How to chack objects for equality and Hashcode
+===============================================================================================================
+          WpfLib1 . Utils . IsReferenceEqual ( Tabview . Tabcntrl . ActiveControlType , Tabview . Tabcntrl . lbUserctrl , "Tabview . Tabcntrl . ActiveControlType" , "Tabview . Tabcntrl . lbUserctrl" , true );
+optional 1 :  Still outputs to Debug console, No string (name) info
+          WpfLib1 . Utils . IsReferenceEqual ( Tabview . Tabcntrl . ActiveControlType , Tabview . Tabcntrl . lbUserctrl , true );
+optional 2 :  No output to Debug console, No string (name) info
+          WpfLib1 . Utils . IsReferenceEqual ( Tabview . Tabcntrl . ActiveControlType , Tabview . Tabcntrl . lbUserctrl );
+		  
+		  Hash Check :
+		  WpfLib1 . Utils . IsHashEqual ( Tabview . Tabcntrl . lbUserctrl . listbox1 , this . listbox1 , "Tabview . Tabcntrl . lbUserctrl. listbox1" , "this.listbox1" , true ); 
+
+==============================================================================================================
+	// How to call SQL data loading FAT methods
+===============================================================================================================
+           Task task = Task . Run (  ( ) =>
+            {
+                   // This is pretty fast - uses Dapper and Linq
+                     this . Dispatcher . Invoke ( ( ) =>
+                     {
+                         UserControlDataAccess . GetBankObsCollectionAsync ( Bvm, "" , true, "DgUserControl" );
+                         UserControlDataAccess . GetCustObsCollectionAsync ( Cvm, "" , true, "DgUserControl" );
+                     } );
+                return Bvm;
+
+==============================================================================================================
+	// How to speed up listviews in particular, but other content controls as well
+===============================================================================================================
+          
+		<ListView .ItemsPanel>
+            <!--// Saves memory and loads much faster-->
+            <ItemsPanelTemplate>
+                <VirtualizingStackPanel/>
+            </ItemsPanelTemplate>
+        </ListView .ItemsPanel>
+		You can replace DataGrid with DataGridor ListBox as well
+
+		ALSO adding 
+			maxheight="2000" 
+		or equally large values helps in speed for all 3 controls
+
+==============================================================================================================
+	// How to wrap methods in threads to access UI elements
+===============================================================================================================
+                    ControlName. Current . Dispatcher . Invoke ( ( ) =>);
+						Your single line of code here..... ( using the STA UI Thread:)
+					OR
+                    Application . Current . Dispatcher . Invoke ( ( ) =>{
+						Your lines of code here..... ( using the STA UI Thread:)
+						Your lines of code here..... ( using the STA UI Thread:)
+					});
+					as many commands as required go in here.
+
+					To use it with Tasks :
+
+                    Application . Current . Dispatcher . Invoke ( ( ) =>{
+						Task . Run ( () => {
+							Your 1st Task code goes here.....
+							Your 2nd Task code goes here.....
+						});
+						Other code required to be in UI thread goes here.....
+					});
+					 
+					 or vice versa to run multiple Task items that are using the STA UI Thread:
+
+					Task . Run ( () => {
+		                Application . Current . Dispatcher . Invoke ( ( ) =>{
+							Your lines of code goes here.....
+						});
+					});
+
+	
+==============================================================================================================
+	// How to use my Utils.FindChildren method
+===============================================================================================================
+        // arguments are (Control to be searched, string = control type eg"Button" etc)
+		//Passing "*"" will return ALL controls found...
+
+		List<object> obj = Utils . GetChildControls ( Tview , "TabItem" );
+        foreach ( var item in obj)
+        {
+            TabItem titem = item as TabItem;
+            Debug . WriteLine ($"{item.ToString()}, {titem.Name}");
+        }
+==============================================================================================================
+	// How to access an objects properties easily
+===============================================================================================================
+    
+	(item as Button ). Content = "&&&&&&&";
+    
+===============================================================================================================
+	// How to run two (or even more) tasks in parallel safely and easily ()
+	// Here I load data via sql as the main task, but also process the relevant screen layout stuff in the child process
+===============================================================================================================
+            // First, declare the Main Task (task2() here) as a new task with the usual ( () => { setup
+            // DO NOT CLOSE IT ..... just wrap it all in { ......  }
+            Task maintask = new Task ( ( ) =>
+            {
+                // Thereafter the basic logic is this :-
+                // Next, without closing the main task2 with a ); we declare the secondary Task
+                //(child() here) as a new task with the usual ' ( () => { '  setup and
+                //place the relevant code in there, finally closing it withthe usual  '}'
+                // add the  ,TaskCreationOptions. AttachedToParent statement to the CHILD after it's closing ' }
+                // '(Note the comma at the front..) and *** without*** any terminating semi colon.
+                // Then close the child Task with the usual   ' ); '
+                // Run it with ' child . Start(); ' immediately after its declaration
+                // Next, while stil inside outer ' { '  declare the Parent task as another new task directly below the ' child.Start(); '
+                // finally Close the outer (main) Task OFF and finally :
+                // Call ' task2 . Start(); ' to run the entire thing......
+                Task child = new Task (  ( ) =>
+                {
+                    Debug . WriteLine ( $"Loading Db....." );
+					etc ....;
+					can be loads in here ......
+                } , TaskCreationOptions . AttachedToParent
+                );		// close off child task
+				// RUN THE CHILD Task here (strange but true)
+				child . Start ( );
+
+				OR				
+				// Add do not start it yet, but add more child(ren) if required in the same way as above
+                Task child2 = new Task (  ( ) =>
+                {
+					.....more code to run in parallel
+				});		// close off child task
+                
+				....... more child processes here if required
+                Task child3 = new Task ( ( ) =>
+                {
+                    // just to prove it all works in parellel
+                    for ( int i = 0 ; i < 100 ; i++ )
+                    {
+                        Console . Write ( "." );
+                        Thread . Sleep ( 10 );
+                    }
+                    Debug . WriteLine ( "\nTest thread ended...." );
+                } );
+				 
+				// Run the child processes in reverse order ( I think)
+				child x .....
+                child3 . Start ( );
+				child2 . Start ( );
+                child . Start ( );
+
+				// This is the main "Parent" task, which we just declare inline here
+                lvUserctrl . LoadBank ( true );
+				....... more code as needed
+            }
+            );		// close off main task
+
+			// RUN THE WHOLE THING
+            maintask . Start ( );
+        }
+
+===============================================================================================================
+	// How to pass arguments in BackgroundWorker ()
+===============================================================================================================
+      private void LbWorker_DoWork ( object sender , DoWorkEventArgs e )
+        {
+            Debug . WriteLine ( $"Calling ListBox Background Worker ProgressChanged method" );
+            BackgroundWorker worker = sender as BackgroundWorker;
+            // How  to pass more than just percent  done by using e.Argument (object) which can be anyhing you want to unpack in progresschanged()
+            worker . ReportProgress ( 10 , e . Argument as LbUserControl );
+              Debug . WriteLine ( $"Cancelling thread of ProgressChanged method" );
+            Tview . ProgressBar_Progress . UpdateLayout ( );
+            worker . CancelAsync ( );
+		}
+===============================================================================================================
+	// How close any or even all open window in any application
+===============================================================================================================
+            // public CloseWindows(object WinNameToClose)
+			{
+				//WindowCollection v = Application . Current . Windows;
+				// foreach ( Window item in v )
+				// {
+				//		Allow for ALL or just a specific window name
+				//     if ( WinNameToClose. ToString ( )  == "*"  )
+				//     {
+				//         item . Close ( );
+					//}
+					else if(item . ToString ( ) . Contains ( WinNameToClose )
+					//{
+					//         item . Close ( );
+					//         break;
+					//     }
+				// }
+			//}
+===============================================================================================================
+	// How to setup shadows on text
+===============================================================================================================
+             <Button.Content>
+                    <TextBlock Text="Load Customer">
+                        <TextBlock.Effect>
+                            <DropShadowEffect ShadowDepth="2" 
+								BlurRadius="0.5" 
+								Color="White" 
+								Direction="310"/>
+                            
+							<!--<BlurEffect Radius="1.0" KernelType="Box"/>-->
+                        </TextBlock.Effect>   
+						
+                        <!--<TextBlock.RenderTransform>
+                            <TranslateTransform X="3" Y="3" />
+                        </TextBlock.RenderTransform>-->
+                    </TextBlock>
+                </Button.Content>
+
+===============================================================================================================
+	// How to close any window from c#
+===============================================================================================================
+           WindowCollection v = Application . Current . Windows;
+            foreach ( Window item in v )
+            {
+                if ( item . ToString ( ) . Contains ( "LoadPopup" ) )
+                {
+                    item . Close ( );
+                    break;
+                }
+            }	
+
+===============================================================================================================
+	// How to use predicates etc
+===============================================================================================================
+	// NB: Predicates MUST only have ONE argmuent & return a bool 
+	// NB: Actions can have MULTIPLE (<=16) argmuents BUT MUST return void
+	// NB: Func can have ZERO or (<=16) argmuents & NO return except  as the last parameter as an OUT variable
+
+		//==========
+		// PREDICATES :
+		//==========
+		static bool IsUpperCase(string str)
+		{return str.Equals(str.ToUpper());}
+
+		Predicate<string> isUpper = IsUpperCase;
+		
+		OR
+		
+		Predicate<string> isUpper = delegate(string s) { return s.Equals(s.ToUpper());};
+		bool result = isUpper("hello world!!");
+
+		//==========
+		// ACTIONs
+		//==========
+	// NB: Actions can have MULTIPLE (<=16) argmuents BUT MUST return void
+		Action<int> printActionDel = ConsolePrint;
+		//Or
+		Action<int> printActionDel = new Action<int>(ConsolePrint);
+		//Or
+		Action<int> printActionDel = i => Console.WriteLine(i);
+
+		//==========
+		// FUNCs
+		//==========
+
+	// NB: Func can have ZERO or (<=16) argmuents & NO return except  as the last parameter as an OUT variable
+	// Arguments are enclosed in <>
+
+	//Simple example :
+		Func<int, int, int> sum;
+		has 2 int input args and ONE int out argument
+
+		// Generic version :
+		public delegate TResult Func<in T, out TResult>(T arg);
+				where (T Arg) is te type of the 1st input arg
+
+				Func<int,int, int> add = Sum;
+
+				where it can call  :
+				public  int Sum(int x, int y) {  }
+				as it has 2 inputs  and one output....
+
+				OR equally valid is  :
+				Func<int> getRandomNumber;
+
+===============================================================================================================
+	// How to read data fron ANY ObservableCollection object using a generic Iterator method
+===============================================================================================================
+	        // This uses a Generic Iteration Method to read the data that handles any type of Collection
+            // it uses the IEnumerable Iterator method to access the collection and  returns them indiviually
+            // because it uses the yield return  system, so it can be used to obtain any number of records
+            // as individual items without having to load them all into memory
+		
+		//To call the generic method :-
+		foreach ( int item in ReadGenericCollection( intobj ) )
+        {
+            Debug . WriteLine ( item );
+        }
+		
+		// the generic routine itself
+		public static IEnumerable ReadGenericCollection<T> ( ObservableCollection <T> collection)
+        {
+            IEnumerator ie = collection. GetEnumerator ( );
+            foreach ( var item in collection )
+            {
+                if(ie.MoveNext())
+                yield return item;
+            }
+        }
+
+===============================================================================================================
+	// How to use IEnumerable's Iterator
+===============================================================================================================
+        private void IterateCollection ( )
+        {
+            //  Iterates thru all records in the collection
+            BankAccountViewModel bvrecord = new BankAccountViewModel ( );
+            IEnumerator ie = bvm . GetEnumerator ( );
+            while ( true )
+            {
+                if ( ie . MoveNext ( ) )
+                {
+				// Cast item to relevant type
+                    bvrecord = ie . Current as BankAccountViewModel;
+                    Debug . WriteLine ( bvrecord . CustNo );
+                }
+                else break;
+            }
+        }
+===============================================================================================================
+	// How to use yield return
+===============================================================================================================
+           // Caling method :
+		   foreach ( DataRow item in LoadSelectedBankYield (lim1, lim2 ) )
+            {
+			}
+		//enumerable method called (MUST be IEnumerable,xxxx()>)
+       public IEnumerable<DataRow> LoadSelectedBankYield (int lim1, int lim2 )
+        {
+            // Use Yield return for max efficiency
+            //YIELD RETURN Method to return Bank records matching ACTYPE lowHigh values pased to it
+            // Only  returns records that have a matching ACTYPE(s), saving memory
+            // that would otherwise be used processing all the (nearly 5000 records in this Db
+            // NB There s a time overhead for this.
+			// DataTable is a  global var
+            BankAccountViewModel bvrecord = new BankAccountViewModel ( );
+            foreach ( DataRow item in dt . Rows )
+            {
+                bvrecord . AcType = Convert . ToInt32 ( item[ 3 ] );
+                if( bvrecord . AcType >= lim1 && bvrecord . AcType  <= lim2)
+                    yield return item;
+            }
+
+   
+===============================================================================================================
+	// How to Setup messaging between windows/Controls with specialized arguments (Args)
+===============================================================================================================
+        // In Provider Control/Window
+		//=====================
+		// define the delegate handler signature and the event that will be raised
+        // to send the message using my own specific Arguments
+        public delegate void SendUserHandler ( object sender , MessageEventArgs args );
+        public event SendUserHandler SendUser;
+
+		// How  to trigger the messaging system
+		//=============================
+		private void UserControl_LostFocus ( object sender , RoutedEventArgs e )
+        {
+            // make sure we have >= 1 listener
+			if ( this . SendUser != null )
+            {
+                // This works fine, but have to parse out the arguments format
+                MessageEventArgs mea = new MessageEventArgs ( );
+                string str = e . OriginalSource.ToString();
+                mea . message = $"{str}";
+                this . SendUser ( sender , mea );
+            }
+
+		In Recipient/Subscriber window/Control
+		==============================
+		//Setup a RoutedEvent to pass data to anyone listening for it when Enter is hit or it looses focus (if Valid)
+        // setup a handler in Loaded event or simillar
+		tbw . SendUser += new SendUserHandler ( UpdateUserNameEventHandler);
+
+		// Create method to handle  the data received from remote control/Window
+		protected void UpdateUserNameEventHandler ( object sender , MessageEventArgs e )
+        {
+            //Handle event sent from TextBoxwithDataError user control on Focus lost or Enter hit
+            string str = e . message;
+		}
+
+		//and  finally create Args  structure as a new class somewhere :
+		//=============================================
+		public class MessageEventArgs : System . EventArgs
+		{
+			private String mMessage;
+			public String message
+			{
+				get
+				{
+					return ( mMessage );
+				}
+				set
+				{
+					mMessage = value;
+				}
+			}  // message
+		}  // MessageEventArgs
+
+
+===============================================================================================================
+	// How to validate a  Cell # in  code
+===============================================================================================================
+
+	Private string checkCellNumber(string Mobilenumber)
+	{
+		Regex regex = new Regex(@"^\D?(\d{3})\D?\D?(\d{3})\D?(\d{4})$");
+            if (regex.Match(Mobilenumber) == Match.Empty)
+                  return "Invalid Phone Format";
+			else
+				  return Mobilenumber
+	}
+
+===============================================================================================================
+	// Easy way to access IDataErrorInfo in XAML with "popup" error messages"
+	that appear over whatever is imediately below  the field concerned
+	and shows whatever your DataError processing returns, so if all is well, return blank string to clear the display of the message
+===============================================================================================================
+	      
+		  <TextBox Text="Enter User name as 2 words...." />
+        <TextBox Text="{Binding Name ,UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True,NotifyOnValidationError=true}" 
+                 Height="30"
+                  FontSize="16">
+            <!--// How  to show error responses witohut using a seperate field-->
+            <!--It pops up below the entry field, so you need to have a background color of some form for the message.-->
+            <Validation.ErrorTemplate>
+                <ControlTemplate>
+                    <StackPanel>
+                        <!-- Placeholder for the TextBox itself -->
+						<!-- this could be as complex as you want -->
+                        <AdornedElementPlaceholder x:Name="textBox"/>
+                        <Border BorderBrush="Red" BorderThickness="1">
+							<TextBlock Text="{Binding [0].ErrorContent}" Foreground="{Binding ErrorContent, Converter={StaticResource SetBoolRedBlack}}"
+                                   Background="Beige" Height="25" />
+                        </Border>
+                    </StackPanel>
+                </ControlTemplate>
+            </Validation.ErrorTemplate>
+        </TextBox>
+
+===============================================================================================================
+	// How to access IDataErrorInfo in XAML
+===============================================================================================================
+	// This part MUST be in a Binding clause
+        Height="{Binding ActualHeight, ElementName=row1, ValidatesOnDataErrors=True}"
+        Width="{Binding ActualWidth, ElementName=col1,ValidatesOnDataErrors=True}"
+
+// Also we need a generic style to match control being validated eg:
+
+	TextBox.Style>
+			<Style TargetType="{x:Type TextBox}">
+				<Style.Triggers>
+				
+				// one method - note the RelativeSource stuff !!
+
+					<Trigger Property="Validation.HasError" Value="true">
+						<Setter Property="ToolTip"
+					Value="{Binding RelativeSource={RelativeSource Self}, 
+						   Path=(Validation.Errors)[0].ErrorContent}"/>
+					</Trigger>
+				
+				//Another method - note the RelativeSource stuff !!
+
+					<Trigger Property="Validation.HasError" Value="true">
+						<Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, 
+						Path=(Validation.Errors).CurrentItem.ErrorContent}" />
+                </Trigger>
+				
+				</Style.Triggers>
+			</Style>
+		</TextBox.Style>
+
+		in Code behind ( or ViewModel ) we need IDataErrorInfo i/f method :
+		public string this [ string PropertyName ] 
+        { 
+            get 
+            { 
+                if(PropertyName == "img")
+                {
+                    if ( img . Source == null )
+                        return null;
+                }
+                return null;
+            } 
+        }
+
+		And/ Or
+
+		string IDataErrorInfo.Error
+		{
+			get
+			{
+				if(PersonName=="Tom" && Age!=30)
+				{
+					return "Tom must be 30.";
+				}
+				return null;
+			}
+		}
+
+NB See DataErrorWindow for a different Method
+
+===============================================================================================================
+	// How to close entire application elegantly
+===============================================================================================================
+            Application . Current . Shutdown ( );
+
+===============================================================================================================
+	// How to use Dispatcher to run a thread 
+===============================================================================================================
+
+            await Dispatcher . BeginInvoke ( DispatcherPriority . Normal , ( Action ) ( async ( ) => 
+				await RunExpandSystem ( tvi )  
+			) );
+
+===============================================================================================================
+	// How to use behavior (in its own class)
+===============================================================================================================
+
+ //REQUIRED HEADER
+       xmlns:TxtChBhe="clr-namespace:MyDev . Behaviors"
+       xmlns:e="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+
+ <TextBox Width="150" Height="25">
+           <e:Interaction.Behaviors>
+               <TxtChBhe:TextChangeBehavior></TxtChBhe:TextChangeBehavior>
+           </e:Interaction.Behaviors>
+       </TextBox>
+
+===============================================================================================================
+	// How to access items in  Styles
+===============================================================================================================
+		// This is the style we are accessing
+
+               <Style TargetType="{x:Type Button}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid Margin="5" Name="grid">
+                            <Ellipse Stroke="DarkBlue" StrokeThickness="2">
+                                <Ellipse.Fill>
+                                    <RadialGradientBrush Center="0.3,0.2" RadiusX="0.5" RadiusY="0.5">
+                                        <GradientStop Color="Azure" Offset="0.1" />
+                                        <GradientStop Color="CornflowerBlue" Offset="1.1" />
+                                    </RadialGradientBrush>
+                                </Ellipse.Fill>
+                            </Ellipse>
+                            <ContentPresenter Name="content" Margin="10"
+                                HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+		// This  is the ListBox
+		<ListBox Name="myListBox" ItemTemplate="{StaticResource MyDataTemplate}"
+  
+		// This  is the DataTemplate
+       <DataTemplate x:Key="MyDataTemplate">
+            <TextBlock Name="textBlock" FontSize="14" Foreground="Blue">
+                <TextBlock.Text>
+                    <Binding XPath="Title"/>
+                </TextBlock.Text>
+            </TextBlock>
+        </DataTemplate>
+
+      private void ControlTemplateFindElement(object sender, RoutedEventArgs e)
+        {
+            // Finding the grid that is generated by the ControlTemplate of the Button
+            var gridInTemplate = (Grid) myButton1.Template.FindName("grid", myButton1);
+
+            // Do something to the ControlTemplate-generated grid
+            MessageBox.Show("The actual width of the grid in the ControlTemplate: "
+                            + gridInTemplate.GetValue(ActualWidthProperty));
+        }
+
+		private void DataTemplateFindElement(object sender, RoutedEventArgs e)
+        {
+		  // Getting the currently selected ListBoxItem
+            // Note that the ListBox must have
+            // IsSynchronizedWithCurrentItem set to True for this to work
+            var myListBoxItem =
+                (ListBoxItem) (myListBox.ItemContainerGenerator.ContainerFromItem(myListBox.Items.CurrentItem));
+
+            // Getting the ContentPresenter of myListBoxItem
+            var myContentPresenter = FindVisualChild<ContentPresenter>(myListBoxItem);
+
+            // Finding textBlock from the DataTemplate that is set on that ContentPresenter
+            var myDataTemplate = myContentPresenter.ContentTemplate;
+            var myTextBlock = (TextBlock) myDataTemplate.FindName("textBlock", myContentPresenter);
+		}
+===============================================================================================================
+	// How to use a Rectangle by calling various  paths named "AnimationPath" with DoubleAnimations
+===============================================================================================================
+      <Rectangle x:Name="MyRectangle"
+                   Height="20" Width="50"
+                   Fill="{StaticResource Red5}" 
+                   Margin="90,12,308,101" 
+                   Grid.Column="1"
+                   Grid.Row="3">
+            <Rectangle.RenderTransform>
+                <TranslateTransform x:Name="AnimatedTranslateTransform"  />
+            </Rectangle.RenderTransform>
+
+            <Rectangle.Triggers>
+                <EventTrigger RoutedEvent="Path.Loaded">
+                    <BeginStoryboard>
+                        <Storyboard RepeatBehavior="Forever">
+
+                            <!-- Animates the rectangle horizotally along the path. -->
+                            <DoubleAnimationUsingPath
+									Storyboard.TargetName="AnimatedTranslateTransform"
+									Storyboard.TargetProperty="X"
+									PathGeometry="{StaticResource AnimationPath}"
+									Source="X" 
+									Duration="0:0:5"  />
+
+                            <!-- Animates the rectangle vertically along the path. -->
+                            <DoubleAnimationUsingPath
+									Storyboard.TargetName="AnimatedTranslateTransform"
+									Storyboard.TargetProperty="Y"
+									PathGeometry="{StaticResource AnimationPath}"
+									Source="Y" 
+									Duration="0:0:5"  />
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </Rectangle.Triggers>
+        </Rectangle>
+
+===============================================================================================================
+	// How to use a storyboard from c# that resizes a control (Image in this case)
+===============================================================================================================
+			//Makes a rectangle height increase/decrease on startup over 0.5 seconds
+			Storyboard  MyStoryboard = new Storyboard ( );
+			DoubleAnimation myDoubleAnimation = new DoubleAnimation ( );
+			myDoubleAnimation . From = 35.0;
+			myDoubleAnimation . To = 45.0;
+			myDoubleAnimation . Duration = new Duration ( TimeSpan . FromSeconds ( 0.5 ) );
+			myDoubleAnimation . AutoReverse = true;
+			Storyboard . SetTargetProperty ( myDoubleAnimation , new PropertyPath ( Image. HeightProperty ) );
+			myDoubleAnimation . RepeatBehavior = RepeatBehavior . Forever;
+			MyStoryboard . Children . Add ( myDoubleAnimation );
+
+			DoubleAnimation myDoubleAnimation2 = new DoubleAnimation ( );
+			myDoubleAnimation2 . From = 35.0;
+			myDoubleAnimation2 . To = 45.0;
+			myDoubleAnimation2 . Duration = new Duration ( TimeSpan . FromSeconds ( 0.5 ) );
+			myDoubleAnimation2 . AutoReverse = true;
+			Storyboard . SetTargetProperty ( myDoubleAnimation2 , new PropertyPath ( Image . WidthProperty ) );
+			myDoubleAnimation2 . RepeatBehavior = RepeatBehavior . Forever;
+			MyStoryboard . Children . Add ( myDoubleAnimation2 );
+
+			MyStoryboard . Begin ( magnifyimage );
+
+===============================================================================================================
+	// How to use a storyboard that resizes any control without being caught with the control 
+	//staying in the mouseover state by moving the mouse over the control too fast
+===============================================================================================================
+
+                        <DoubleAnimation
+                                    Storyboard.TargetProperty="(Button.Height)"
+                                    By="5" Duration="0:0:0.3" 
+      ****                              FillBehavior="HoldEnd"
+                                    AutoReverse="false"  />
+ 
+                          <DoubleAnimation
+                                    Storyboard.TargetProperty="(Height)"
+                                    By="-5" Duration="0:0:0.3" 
+       *****                              FillBehavior="Stop"
+                                    AutoReverse="false"  />
+
+		Note the different FillBehaviours on the mouseover/Mouseleave handling
+		this avoids  the problem of buttons getting progressively smaller
+
+===============================================================================================================
+	// How to set a Grid's Row or Column heights from C#- great  for working with splitters
+===============================================================================================================
+           // This sets the relative height of a Grid's row heights - works  too
+            LeftPanelgrid . RowDefinitions [ 0 ] . Height = new GridLength ( 0.01 , GridUnitType . Star );
+            LeftPanelgrid . RowDefinitions [ 1 ] . Height = new GridLength ( 20 , GridUnitType . Pixel );
+            LeftPanelgrid . RowDefinitions [ 2 ] . Height = new GridLength ( 20 , GridUnitType . Star );
+
+            LeftPanelgrid . ColumnDefinitions [ 0 ] . Width= new GridLength ( 20 , GridUnitType . Star );
+            LeftPanelgrid . ColumnDefinitions [ 2 ] . Width= new GridLength ( 20 , GridUnitType . Star );
+
+			/ how to get the value (use gl1.Value to access this as double)
+			GridLength gl1 = new ( SPFullDataContainerGrid . RowDefinitions [ 0 ] . ActualHeight );
+			double dbl = gl1.Value;
+
+===============================================================================================================
+	// How to use my  Flowdoc in any file
+===============================================================================================================
+
+//ALL METHODS / Declarations to be added to source file :
+
+		// Flowdoc file wide variables
+		// Pointer to the special library FlowdocLib.cs 
+		FlowdocLib fdl = new FlowdocLib();
+		private double XLeft=0;
+		private double YTop=0;
+        private bool UseFlowdoc = true;
+        public static object MovingObject { get; set; }
+
+		//Maximize hook  +/- statements - dont forget to remove them (Unsubscribe on closing)
+		Flowdoc . ExecuteFlowDocMaxmizeMethod += new EventHandler ( MaximizeFlowDoc );
+		Flowdoc . ExecuteFlowDocMaxmizeMethod -= new EventHandler ( MaximizeFlowDoc );
+        FlowDoc . FlowDocClosed += Flowdoc_FlowDocClosed;
+
+=======================================================================================
+ place in .CS Code behind
+	#region FlowDoc support
+		/// <summary>
+		///  These are the only methods any window needs to provide support for my FlowDoc system.
+
+		// This is triggered/Broadcast by FlowDoc so that the parent controller can Collapse the 
+		// Canvas so it  does not BLOCK other controls after being closed.
+		private void Flowdoc_FlowDocClosed ( object sender , EventArgs e )
+        {
+            canvas . Visibility = Visibility . Collapsed;
+        }
+
+		protected void MaximizeFlowDoc ( object sender , EventArgs e )
+		{
+			// Clever "Hook" method that Allows the flowdoc to be resized to fill window
+			// or return to its original size and position courtesy of the Event declard in FlowDoc
+			fdl . MaximizeFlowDoc ( Flowdoc , canvas , e );
+		}
+
+		private void Flowdoc_MouseLeftButtonUp ( object sender , MouseButtonEventArgs e )
+		{
+			// Window wide  !!
+			// Called  when a Flowdoc MOVE has ended
+			MovingObject = fdl . Flowdoc_MouseLeftButtonUp ( sender , Flowdoc , MovingObject , e );
+			ReleaseMouseCapture ( );
+		}
+
+		// CALLED WHEN  LEFT BUTTON PRESSED
+		private void Flowdoc_PreviewMouseLeftButtonDown ( object sender , MouseButtonEventArgs e )
+		{
+			//In this event, we get current mouse position on the control to use it in the MouseMove event.
+			MovingObject = fdl . Flowdoc_PreviewMouseLeftButtonDown ( sender , Flowdoc , e );
+			Debug . WriteLine ($"MvvmDataGrid Btn down {MovingObject}");
+		}
+
+		private void Flowdoc_MouseMove ( object sender , MouseEventArgs e )
+		{
+			// We are Resizing the Flowdoc using the mouse on the border  (Border.Name=FdBorder)
+				fdl . Flowdoc_MouseMove ( Flowdoc , canvas , MovingObject , e );
+		}
+
+		// Shortened version proxy call		
+		private void Flowdoc_LostFocus ( object sender , RoutedEventArgs e )
+		{
+			Flowdoc . BorderClicked = false;
+		}
+
+		public void FlowDoc_ExecuteFlowDocBorderMethod ( object sender , EventArgs e )
+		{
+			// EVENTHANDLER to Handle resizing
+			FlowDoc fd = sender as FlowDoc;
+			Point pt = Mouse . GetPosition (canvas );
+			double dLeft = pt.X;
+			double dTop= pt.Y;
+		}
+
+		private void LvFlowdoc_PreviewMouseLeftButtonDown ( object sender , MouseButtonEventArgs e )
+        {
+            //In this event, we get current mouse position on the control to use it in the MouseMove event.
+            MovingObject = fdl . Flowdoc_PreviewMouseLeftButtonDown ( sender , Flowdoc , e );
+        }
+ 
+		public void fdmsg ( string line1 , string line2 = "" , string line3 = "" )
+		{
+			//We have to pass the Flowdoc.Name, and Canvas.Name as well as up   to 3 strings of message
+			//  you can  just provie one if required
+			// eg fdmsg("message text");
+			fdl . FdMsg ( Flowdoc , canvas , line1 , line2 , line3 );
+		}
+
+		#endregion Flowdoc support via library
+
+=======================================================================================
+		/ how tp call flowdoc
+		fdl.ShowInfo ( Flowdoc, canvas , $"The request for the default Bank Accounts table [{CurrentType}] was successful, and the {DbCount} results returned are shown in the datagrid ..." ,
+				  "Blue3" ,
+				  "" ,
+				  "" ,
+				  "" ,
+				  "" ,
+				   "Default Bank Account data table" ,
+				    "Red3" );
+
+	     or just the short form of up to 3 lines of text...
+
+	     fdmsg ( string line1 , string line2 = "" , string line3 = "" )
+
+
+	    in the XAML files
+	    =============
+
+        in <Window 
+	  xmlns:user="clr-namespace:MyDev.UserControls" >
+
+	  
+	  <Grid>	// Main Wrapper for window (can be any type)
+
+		// the UserControl MUST always be named ""Flowdoc""   EXACTLY (case sensitive)
+
+		// You need to wrap the entire window area in a Canvas (I suggest it is named ""canvas"")
+		// but it can be placed anywhere inside the main Grid or whatever is used  to wrap the entire window
+		// Ensure it is set as Visibility="COLLAPSED"
+		// It s recommended to always name if just "canvas" for continuty across all controls using Flowdoc
+
+		<Canvas x:Name="canvas" Grid.Row="0"
+				Canvas.Left="0" Canvas.Top="0"
+				HorizontalAlignment="Stretch"
+				VerticalAlignment="Stretch"
+				Height="{Binding Path=Height, ElementName=MainGrid}"
+				Width="{Binding Path=Width, ElementName=MainGrid}"
+				Panel.ZIndex="4"
+				Background="Transparent"
+MUST BE -		Visibility="Collapsed">
+
+	    		<user:FlowDoc x:Name="Flowdoc"
+				backGround="{StaticResource Gray5}"
+				borderColor="{StaticResource Orange1}"
+				Canvas.Left="45"
+				Canvas.Top="64"
+				Height="300"
+				Margin="0 0 0 0"
+				MouseLeftButtonUp="Flowdoc_MouseLeftButtonUp"
+				MouseMove="Flowdoc_MouseMove"
+				LostFocus="Flowdoc_LostFocus"
+				Opacity="1"
+				Panel.ZIndex="4"
+				PreviewMouseLeftButtonDown="LvFlowdoc_PreviewMouseLeftButtonDown"
+MUST BE -				Visibility="Collapsed"
+				Width="520" />
+			</Canvas>
+
+					......  all other Window functionality goes here .....
+
+	</Grid>
+
+		#endregion FlowDoc support
+
+===============================================================================================================
+	// How to ensure that the Db Domain is correct BEFORE trying to access Stored Procedures or other Tables
+	// that are not in the default (IAN1) SQL domain used most f the time (Adventureworks etc)
+	// GenericDbHandlers.CS is required
+
+	// GenericDbHandlersContains has this very useful helper method for ensuring SQL Db handling will acess the correct M$ Db name "Ian1" is mmmy main supply
+	// but it is generic for any Db names shown in M$SQLServer (requires FLAGS.CS also as it  trigger the connection strings utility therein)
+===============================================================================================================
+
+		private static void GenericDbHandlers.CheckDbDomain(string DbDomain="IAN1")
+
+===============================================================================================================
+	// How to access ICommands
+===============================================================================================================
+		// Declare it
+		// NB MUST have {get; set;} else it will NOT work
+		public ICommand CloseWindow { get; set; }
+		
+		// set it up in Constructor
+		CloseWindow = new RelayCommand ( ExecuteCloseWindow , CanExecuteCloseWindow );
+
+		// Provide ICommand methods as below
+		public void ExecuteCloseWindow(object arg)
+		public void CanExecuteCloseWindow(object arg)
+
+		// Make sure that the DataContext in XAML matches wherever the code above lives !!!
+
+===============================================================================================================
+	// How to access Viewmodels etc classes in the various  classes as needed
+===============================================================================================================
+	// Declare variables in class
+	PersonViewModel pvm;
+	...................mgm;
+	.........
+
+	// in the Loaded clause add the following :
+			pvm =  Resources [ "PersonViewmodel" ] as PersonViewModel;
+			mgm = Resources [ "MvvmGenModel"] as MvvmGenericModel ;
+			person = Resources [ "person" ] as Person;
+
+			// in The Main windows XAML add :-
+				<Window.Resources>
+					<view:MvvmViewModel x:Key="vm"/>
+					<viewmodels:PersonViewModel x:Key="PersonViewmodel"/>
+					<viewmodels:MvvmGenericModel x:Key="MvvmGenModel"/>
+					<model:Person x:Key="person"/>
+				</Window.Resources>
+
+				// Now you can access these live classes anytime you need to
+
+===============================================================================================================
+	// How to HOOK into a method in another control/usercontrol/w.h.y Events
+	// **** This could be used in many scenarios to allow "Remote" handling of other controls/Windows ****//
+===============================================================================================================
+
+		// Put this in  the window we wnnt to perform the "Control" FROM to Hook,in this case
+		// into our Flowdoc so we can resize it in  the canvas !!!
+		// Flowdoc has an Event declared (ExecuteFlowDocSizeMethod ) that we are  hooking into
+		
+		Flowdoc . ExecuteFlowDocSizeMethod += new EventHandler ( ParentWPF_method );
+		
+		// Code in "Donor"  or user control is :"
+		public event EventHandler ExecuteFlowDocSizeMethod;
+		
+		protected virtual void OnExecuteMethod ( )
+		{
+			if ( ExecuteFlowDocSizeMethod != null )
+				ExecuteFlowDocSizeMethod ( this , EventArgs . Empty );
+		}
+
+		public void ChildButton_Click ( object sender , EventArgs e )
+		{
+			OnExecuteMethod ( );
+		}
+
+		// link from the control that initiates this action
+		private void Image_PreviewMouseLeftButtonUp ( object sender , MouseButtonEventArgs e )
+		{
+			/run the method
+			OnExecuteMethod ( );
+		}
+
+===============================================================================================================
+	// How to use a Dp or Attached property in a Style/Template
+===============================================================================================================
+	
+	Note the use of the Relative source stuff, which makes this work !!!
+	This is critical to it working as expected
+
+	RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}
+
+	<Setter Property="FontSize" Value="{Binding Path=Fontsize,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"/>
+
+
+===============================================================================================================
+	// How to Sort Combo/Listbox contents
+===============================================================================================================
+	**cboxname**. Items . SortDescriptions . Add ( new SortDescription ( "" , ListSortDirection . Ascending ) );
+
+===============================================================================================================
+	// How to sort Grid contents
+===============================================================================================================
+	 ICollectionView dataView = CollectionViewSource.GetDefaultView(_data);
+            dataView.SortDescriptions.Clear();
+            dataView.SortDescriptions.Add(new SortDescription("???", ListSortDirection.Ascending));
+            dataView.Refresh();
+            **control**.DataContext = dataView;
+
+===============================================================================================================
+How to drag any control around inside it's parent window - 
+Control to be dragged MUST be inside a transparent Canvas control
+===============================================================================================================
+	private void Flowdoc_PreviewMouseLeftButtonDown ( object sender , MouseButtonEventArgs e )
+		{
+			// FirstXPos / FirstYPos are Global variable
+			//In this event, we get current mouse position on the control to use it in the MouseMove event.
+			FirstXPos = e . GetPosition ( sender as Control ) . X;
+			FirstYPos = e . GetPosition ( sender as Control ) . Y;
+			double FirstArrowXPos = e . GetPosition ( ( sender as Control ) . Parent as Control ) . X - FirstXPos;
+			double FirstArrowYPos = e . GetPosition ( ( sender as Control ) . Parent as Control ) . Y - FirstYPos;
+			// Global variable
+			MovingObject = sender;
+		}
+
+		private void Flowdoc_MouseLeftButtonUp ( object sender , MouseButtonEventArgs e )
+		{
+			// Global variable
+			MovingObject = null;
+		}
+
+		private void Flowdoc_MouseMove ( object sender , MouseEventArgs e )
+		{
+			if ( e . LeftButton == MouseButtonState . Pressed )
+			{
+				double left = e . GetPosition ( ( MovingObject as FrameworkElement ) . Parent as FrameworkElement ) . X - FirstXPos ;
+				double top = e . GetPosition ( ( MovingObject as FrameworkElement ) . Parent as FrameworkElement ) . Y - FirstYPos ;
+				if ( left >= 0  && left <= canvas.ActualWidth - Flowdoc.ActualWidth)
+					( MovingObject as FrameworkElement ) . SetValue ( Canvas . LeftProperty , left );
+				if ( top >= 0 && top <= canvas . ActualHeight- Flowdoc. ActualHeight)
+					( MovingObject as FrameworkElement ) . SetValue ( Canvas . TopProperty , top );
+			}
+		}
+
+===============================================================================================================
+How to fill  a RichTextBox with data from C#
+===============================================================================================================
+		
+		private void ShowInfo ( string info, string header="" )
+		{
+
+			FlowDocument myFlowDocument = new FlowDocument();
+
+			if ( info == "" )
+			{
+				//Clear and reset info panel
+				Paragraph para1= new Paragraph();
+				para1 . Foreground = FindResource ( "Black5" ) as SolidColorBrush;
+				para1 . Inlines . Add ( new Bold ( new Run ( "This panel will show all feedback from Table manipulations...." ) ) );
+				myFlowDocument . Blocks . Add ( para1 );
+				return;
+			}
+			// Add some Bold text to the paragraph
+			if ( header != "" )
+			{
+				Paragraph para2= new Paragraph();
+				para2 . Foreground = FindResource ( "Red4" ) as SolidColorBrush;
+				// how to concatenate attributes on a paragraph
+				para2 . Inlines . Add ( new Underline ( new Bold(new Run ( header ) ) ));
+				
+				// Add more sentences to any paragraph
+//				para2 . Inlines . Add ( new Italic ( new Run ( "\n1111111111111111111111111" ) ) );
+//				para2 . Inlines . Add ( ( new Run ( "\n22222222222") ) );
+				myFlowDocument . Blocks . Add ( para2 );
+			}
+			Paragraph para= new Paragraph();
+			para . Foreground = FindResource ( "Black0" ) as SolidColorBrush;
+			para . Inlines . Add (new Run (info));
+			myFlowDocument . Blocks . Add ( para );
+			Info . Document = myFlowDocument;
+
+			//Convert back to text
+			string text = new TextRange(myFlowDocument.ContentStart, myFlowDocument.ContentEnd).Text;
+
+		}
+
+===============================================================================================================
+How to get data from a datatable directly into a list<string> , or other structures ?
+this uses column ZERO, but any column can be used
+===============================================================================================================
+	List<string> list = new List<string>();
+	foreach ( DataRow row in dt . Rows )
+	{
+		// ... add string value
+		list . Add ( row . Field<string> ( 0 ) );
+	}
+	or.........
+	foreach ( DataRow row in dt . Rows )
+	{
+		list . Add ( row . Field<int> ( 0 ) );
+	}
+	or.........
+	foreach ( DataRow row in dt . Rows )
+	{
+		some_data_Class x = new some_data_Class ();
+		x. fieldname =  row . Field<string> ( 0 ) ;
+	}
+	etc.....
+
+===============================================================================================================
+How  to get the handle of a window from c#
+===============================================================================================================
+
+	Utils . FindWindowFromTitle ( "details a/c editor" , ref handle ) )
+
+===============================================================================================================
+How  to set the color of the TextBlock Caret
+===============================================================================================================
+
+			textBox8. CaretBrush = FindResource ( "White0" ) as SolidColorBrush;
+
+===============================================================================================================
+How  to set datagrid cell style (template) colors from c#
+===============================================================================================================
+			Style style = new Style(); // creates object of style class  
+			style . TargetType = typeof ( DataGridRow );
+
+			int curr = dataGrid . SelectedIndex;
+			// change background brush using "normalbackground"
+			Setter setter = new Setter ( ); // create objects of setter class  
+			setter . Property = DataGridRow . BackgroundProperty;
+			setter . Value = FindResource ( "selBackground" ) as SolidColorBrush;
+			style . Setters . Add ( setter );
+
+			// change foreground brush using "normalforeground"
+			Setter setter2 = new Setter ( ); // create objects of setter class  
+			setter2 . Property = DataGridRow . ForegroundProperty;
+			setter2 . Value = FindResource ( "selForeground" ) as SolidColorBrush;
+			style . Setters . Add ( setter2 );
+			dataGrid . RowStyle = style;
+
+===============================================================================================================
+How  to get a random integer value (0 - 3)
+===============================================================================================================
+
+		Random rnd = new Random();
+		randm = rnd . Next ( 0 , 3 );
+
+===============================================================================================================
+How  to spawn a background process !
+===============================================================================================================
+
+BackgroundWorker  worker = new BackgroundWorker();
+worker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(worker_RunWorkerCompleted );
+worker.DoWork += new DoWorkEventHandler(worker_DoWork);
+worker.RunWorkerAsync();
+
+void worker.DoWork (object sender, DoWorkEventArgs e)
+{
+		// do the work required here.... it  shoulld return  the data set, whatever that is ?
+}
+void worker_RunWorkerCompleted (object sender, RunWorkerCompletedEventArgs e)
+{
+	// handle the data once it has been loaded here ....
+	// Typically something like 
+	 datagrid.ItemsSource = "Data received object" from above
+}
+
+===============================================================================================================
+ * 	How  to access my message boxes easily
+ ===============================================================================================================
+	Full MessageBox				// Snippet  <msf>
+	Short MessageBox			// Snippet  <mss>
+	Default MesageBox			// Snippet  <msx>
+	MesageBox config data		// Snippet  <mbcfg>
+
+	OTHER .CS Snippets:-
+	     cst		Customer
+	     cta		Contains("")
+	     ds		DapperSupport .
+	     bkv		BankAccountViewModel
+	     cvm		CustomerViewModel
+	     gnc		GenericClass
+	     obv		ObservableCollection
+	     spl		Split('');
+	     utl		Utils.
+	     dct		Dictionary< , >
+	     drg		Utils . SetupWindowDrag ( this );
+	     pss		public static string
+
+	OTHER .XAML Snippets:-
+	To make  them work, Save to C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\DesignTools\Snippets\XAML\1033\Snippets
+	grr		<grid.RowDefintion.....
+
+===============================================================================================================
+ * 	How  to stop focus rectangle in buttons
+ ===============================================================================================================
+	<MyControl FocusVisualStyle="{x:Null}" />
+
+===============================================================================================================
+ * 	How  to create a UDT style parameter for Dapper
+ ===============================================================================================================
+First create a User Defined Table type in Database
+
+CREATE TYPE udtt_PersonList AS TABLE 
+(
+    ...
+)
+GO
+In your code
+
+var dynamicParameters = new DynamicParameters();
+dynamicParameters.Add("@PersonList", PersonList.AsTableValuedParameter("[dbo].[udtt_PersonList]"));
+dynamicParameters.Add("TestOutput", 0, Dbtype.Int32, ParameterDirection.Output);
+
+===============================================================================================================
+ * 	How  to convert a List<string> into a Collection
+ ===============================================================================================================
+			// param 1 is  the grid   to be populated
+			generics = CreateDatabase ( UniversalGrid , genericlist  );
+			SqlServerCommands sqlc = new SqlServerCommands();
+
+			// Caution : This loads the data into the Datarid with only the selected rows
+			// //visible in the grid so do NOT repopulate the grid after making this call
+			sqlc . LoadActiveRowsOnlyInGrid ( UniversalGrid , generics , DapperSupport . GetGenericColumnCount ( generics ) );
+	
+===============================================================================================================
+ * 	How  to get  a new instance of a generic  type
+  Can only be used with generic types (eg ObservableCollection<xxxx>)
+ ===============================================================================================================
+				// create new obs<T>
+				// Create an instance - Activator.CreateInstance will call the default constructor.
+				// This is equivalent to calling new ObservableCollection<T>().
+
+				var openType = typeof ( ObservableCollection<T> );
+				Type[] tArgs = {typeof( ObservableCollection <T>) };
+				Type target = openType.MakeGenericType(tArgs);
+				var gc = (GenericClass)Activator.CreateInstance (target);
+										
+					// same as this ??
+					var gc = new GenericClass ( );
+
+
+===============================================================================================================
+ * 	How  to call a method  that takes 1 <T> parameter
+ * 	public  bool <T> GetResult(T arg);
+===============================================================================================================
+			//Test Calls to a method that has one generic parameter <T>
+			DapperGeneric<List<string>> . getresult ( lst);
+			DapperGeneric<ObservableCollection<GenericClass>> . getresult ( Generics );
+			ObservableCollection<BankAccountViewModel> bvm = new  ObservableCollection<BankAccountViewModel>();
+			DapperGeneric<ObservableCollection<GenericClass>> . getresult ( bvm );
+			GenericClass gcc = new  GenericClass   ();
+			DapperGeneric<GenericClass> . getresult ( gcc );
+
+			// This is how the generuic method tests to find out what type has been received ?
+			switch ( test )
+			{
+				case ObservableCollection<GenericClass>:
+					ObservableCollection<GenericClass>o = new  ObservableCollection<GenericClass>( );
+					NB : You cannot use the (arg) parameter directly, and you cant reassign the (o) back to the original (arg)
+					o = test as ObservableCollection<GenericClass>;
+					Debug . WriteLine ( $"collection has {o . Count ( )} records" );
+					break;
+				case GenericClass:
+					GenericClass g = new GenericClass();
+					g = test as GenericClass;
+					Debug . WriteLine ( $"Field1 = [{g . field1}] " );
+					break;
+
+
+===============================================================================================================
+ * 	How  to create multiple args for dapper
+ * 	var parameters = new List<DynamicParameters>();
+===============================================================================================================
+
+	for (var i = 0; i < 3; i++)
+	{
+		var p = new DynamicParameters();
+		p.Add("@Kind", InvoiceKind.WebInvoice, DbType.Int32, ParameterDirection.Input);
+		p.Add("@Code", "Many_Insert_" + (i + 1), DbType.String, ParameterDirection.Input);
+		p.Add("@RowCount", dbType: DbType.Int32, direction: ParameterDirection.ReturnValue);
+
+		parameters.Add(p);
+		
+		// how to use them
+		connection.Execute(sql,
+		parameters,
+		commandType: CommandType.StoredProcedure);
+	}
+
+===============================================================================================================
+// SQL OFFICIAL select syntax
+===============================================================================================================
+<SELECT statement> ::=    
+    [ WITH { [ XMLNAMESPACES ,] [ <common_table_expression> [,...n] ] } ]  
+    <query_expression>   
+    [ ORDER BY <order_by_expression> ] 
+    [ <FOR Clause>]   
+    [ OPTION ( <query_hint> [ ,...n ] ) ]   
+<query_expression> ::=   
+    { <query_specification> | ( <query_expression> ) }   
+    [  {JOIN | UNION [ ALL ] | EXCEPT | INTERSECT }  
+        <query_specification> | ( <query_expression> ) [...n ] ]   
+<query_specification> ::=   
+SELECT [ ALL | DISTINCT ]   
+    [TOP ( expression ) [PERCENT] [ WITH TIES ] ]   
+    < select_list >   
+    [ INTO new_table ]   
+    [ FROM { <table_source> } [ ,...n ] ]   
+    [ WHERE <search_condition> ]   
+    [ <GROUP BY> ]   
+    [ HAVING < search_condition > ]
+
+	--how to assign value to var from table enquiry
+	declare @X decimal;
+	select @x = (select intrate from newbank where Id=2539)
+
+	How to use CASE structure
+	=====================
+	drop table  if exists temp 
+	SELECT custno, bankno,fname,
+		CASE 
+			WHEN fname = 'jules'
+			THEN '££££££££££'
+			WHEN fname = 'Fred'
+			THEN '££££££££££'
+			--WHEN 'PL/SQL' THEN 'PL/SQL is developed by Oracle Corporation.'
+			--WHEN 'MS-SQL' THEN 'MS-SQL is developed by Microsoft Corporation.'
+			else 'gdggdfsg'
+		END AS Description
+	into temp FROM customer
+
+	OR
+
+		SELECT custno, bankno,fname,
+		CASE fname
+			WHEN 'jules'
+			THEN '££££££££££'
+			else 'gdggdfsg'
+		END AS Description
+	into temp FROM customer
+
+===============================================================================================================
+// PC recovery commands oin Powershell (Admin rights)
+===============================================================================================================
+
+  sfc /scannow
+ ... then
+ dism /online /cleanup-image /restorehealth
+ ... should fix machine ???
+
+ Check CONFIG file and make sure  these come in THIS order
+ <configuration>
+	<configSections>
+	</configSections>
+</configuration>
+
+===============================================================================================================
+// newest SQL server connection string
+===============================================================================================================
+
+Server=localhost\MSSQLSERVER03;Database=master;Trusted_Connection=True;
+
+===============================================================================================================
+// How to modify a operator in a class
+===============================================================================================================
+
+		public static bool operator == ( BankAccountViewModel x , BankAccountViewModel y )
+		{
+			return x . Equals ( y );
+		}
+
+===============================================================================================================
+// How to create a COMPLEX SP the easiest way by concatenating strings
+===============================================================================================================
+	
+	IF @ARG2='' 
+		set @SQL='Select * '						-- no Selection provided
+		IF LEFT(UPPER(TRIM(@Arg2)),3)='TOP'
+			set @SQL='Select '+TRIM(@ARG2) +' * '	-- selection = top(xxx)
+		ELSE IF LEFT(UPPER(TRIM(@Arg2)),3)<>'TOP'
+			set @SQL='Select '+TRIM(@ARG2)			-- selection = fieldname(s)
+	
+		set @SQL += ' from ' + TRIM(@ARG1)			-- add DbName to be thesource of the data
+
+		IF  @ARG3<>''
+			set @SQL +=' where '+ TRIM(@ARG3)			-- add any conditions
+		IF @ARG4<>''
+			set @SQL +=' order by '+ TRIM(@ARG4)		-- finally add ordering sequence
+
+	PRINT @SQL
+	Exec sp_executeSql @SQL
+
+===============================================================================================================
+// How to Add a resize "Control" in bottom right of any window
+===============================================================================================================
+
+	  ResizeMode="CanResizeWithGrip"
+ 	  WindowChrome.ResizeGripDirection="BottomRight"
+
+===============================================================================================================
+// How to Add/Create columns in any datagrid
+===============================================================================================================
+
+	for ( int x = 0 ; x < datalist.Count; x++ )
+		{
+			// can  be any column type !
+			DataGridTextColumn tc = new DataGridTextColumn();
+			// column internal name
+			Binding b = new Binding($"Data{x+1}");
+			tc . Binding = b;
+			// Column title
+			tc . Header = $"Data Row {x + 1}";
+			// Add to grid
+			DisplayGrid . Columns . Add ( tc );
+		}
+
+===============================================================================================================
+// How to call DAPPER based Db methods
+===============================================================================================================
+
+		public static ObservableCollection<BankAccountViewModel> GetBankObsCollection ( ObservableCollection<BankAccountViewModel> collection ,
+		string SqlCommand = "" ,			// usually blank
+		string DbNameToLoad = "" ,		// Optional Db name to be loaded/accessed
+		string Orderby = "" ,				// list of field names, comma seperated specifyng the sort order of the output data
+		string Conditions = "" ,			// fuly qualified conditions line such as "Where x = x ... ""
+		bool wantSort = false ,			// enable/disable Sorting
+		bool wantDictionary = false ,		// not used much. but does create a dictionary of < CustNo, int  > where int is just the number index it was loaded into the dictionary
+		bool Notify = false ,				// Use the loading callbck or not
+		string Caller = "" ,					// string returned to identify the calling process
+		int [ ] args = null )					// Important int[3] array] [0] contains lowest CustNo, [1] contains highest CustNo, [2] contains Maximum # of recrods to be loaded.  (Filled out by DapperSupport post call)
+
+		// args does not need to be passed down in call !!  it is an optional parameter, as are many others ( See DapperSupport())
+
+===============================================================================================================
+// how to call new Dapper Db Load options
+===============================================================================================================
+
+// args is int[3] = min, max, total records
+// UseSort and Useconditions are for the ORDER BY and WHERE clauses (if required)
+// they do NOT need these words in them , but remove them if found !!!
+// Equally Args[2] should not contain * but again will be removed
+
+	if ( UseAsyncLoading )
+	{
+		bool result = await DapperSupport . GetMultiBankCollectionAsync ( bvm ,
+			"" ,																	// Buffer for sqlcommand, cos you can send one in if preffered which overrides everything else
+			"Bankaccount" ,													// Actual SQL DBNAME to load
+			UseSort . IsChecked == true ? OrderString . Text : "" ,			// Sort conditions (1 or more ,with commas between)
+			UseConditions . IsChecked == true ? Conditions . Text : "" ,    //Limiter condition (AcType >= 3 etc )
+			true ,																 // Trigger notifications (Always  does send if using Async methods)
+			"DAPPERTESTING" ,											 // Caller Id 
+			args
+		);
+	}
+	else
+	{
+		bvm = DapperSupport . GetMultiBankCollection ( bvm ,
+		"" ,
+		"Bankaccount" ,
+		UseSort . IsChecked == true ? OrderString . Text : "" ,
+		UseConditions . IsChecked == true ? Conditions . Text : "" ,
+		false ,
+		"DAPPERTESTING" ,
+		args
+			);
+
+===============================================================================================================
+//How to copy a db to a new one
+===============================================================================================================
+
+Select * into NEWDB from OLDDB
+
+//Results in a new Db fully populated
+
+===============================================================================================================
+// This STOPS all those infuriating binding debug messages from appearing
+// Add it to any window you do not want these messages to show in
+===============================================================================================================
+System . Diagnostics . PresentationTraceSources . DataBindingSource . Switch . Level = System . Diagnostics . SourceLevels . Critical;
+
+===============================================================================================================
+// How  to use DataGridColumns  from and x:Array in seperate file
+===============================================================================================================
+
+	// Load the selected set of columns, params are (Datagrid name, Array  required)
+	
+	DataGridUtilities . LoadDataGridColumns ( BankGrid , "DGColumns3" );
+
+		// We must also clear our "loaded" columns, or else it stopsworking
+		ObservableCollection<DataGridColumn> dgc = BankGrid.Columns;
+		dgc . Clear ( );
+
+===============================================================================================================
+// Templates that support  AP color control
+===============================================================================================================
+		
+	*** Class DataGridColorCtrlAp ***
+	   CellStyle :  BankAccountGridStyle
+	   CellStyle :  NWSuppliersGridStyle
+	   CellStyle : NWSuppliersGridStyle
+
+	*** Class ListboxColorCtrlAP ***
+	ItemContainerStyle : DataGridColorControlTemplate2
+	ItemContainerStyle : ListBoxColorControlTemplate
+
+===============================================================================================================
+// Howto split grids etc
+===============================================================================================================
+
+		<GridSplitter 
+				Background="Blue" 
+				Height="15"
+				HorizontalAlignment="Stretch"	 
+				ResizeDirection="Rows"
+				ResizeBehavior="BasedOnAlignment"/>
+
+===============================================================================================================
+// How to access ListBox (or ListView) current record's data from c# using PreviewMouse event
+===============================================================================================================
+	private void ListBox_OnPreviewMouseDown ( object sender , MouseButtonEventArgs e )
+	{
+		var item = ItemsControl.ContainerFromElement(sender as ListBox, e.OriginalSource as DependencyObject) as ListBoxItem;
+		if ( item != null )
+		{
+			// ListBox item clicked - do some cool things here
+		}
+	}
+
+	or in xaml :
+
+	<ListBox.ItemContainerStyle>
+		<Style TargetType="{x:Type ListBoxItem}">
+			<EventSetter Event="PreviewMouseLeftButtonUp" Handler="ListBox_OnPreviewMouseDown"/>
+			<EventSetter Event="PreviewMouseLeftButtonDown" Handler="ListBox_OnPreviewMouseUp"/>
+			<EventSetter Event="PreviewDragEnter" Handler="ListBox_OnPreviewDragEnter"/>
+		</Style>
+	</ListBox.ItemContainerStyle>
+
+===============================================================================================================
+// How to change fillter conditions on the fly
+===============================================================================================================
+
+	string arg = changefiltertype.Text;
+	if ( arg == "ACTYPE" )
+		BankviewerView . Filter = new Predicate<object> ( Actypefiltermethod );
+	viewer.Refresh();
+
+	// You  need relevant Methods matching the condition you want it tested against  eg:
+	
+	// NB: Predicates MUST only have ONE argmuent & return a bool 
+
+	private bool Actypefiltermethod ( object obj )
+	{
+		BankAccountViewModel bvm = obj as BankAccountViewModel;
+		Debug . WriteLine ( $"Testing  for {bvm . AcType} == {ActypeFiltervalue} as AcType" );
+		return bvm . AcType == ActypeFiltervalue;
+	}
+
+===============================================================================================================
+// How to use an Action<T>
+===============================================================================================================
+/// Type is Void, args = up to 16
+
+	// Testing Action<T> : takes x arguments, but MUST NOT return anything
+	Action<object, string, int> Myaction;
+	Myaction = output;
+	
+	//Implementation :-
+
+	private void output (object obj, string str, int i)
+	{
+			//do Something ----
+	}
+	
+	To use it in a Lambda expression :-
+	
+	Action<int> MyAction = i => Console.WriteLine(i);       
+    MyAction(10);
+
+===============================================================================================================
+//How to use a Func
+===============================================================================================================
+
+public delegate TResult Func<in T1, in T2, out TResult>(T1 arg1, T2 arg2);
+
+static int Sum(int x, int y)
+    {return x + y;}
+
+To use it :
+
+        Func<int,int, int> add = Sum;
+        int result = add(10, 10);
+        Console.WriteLine(result); 
+
+Using Anonymous method :
+	Func<int> getRandomNumber = delegate()
+        {
+            Random rnd = new Random();
+            return rnd.Next(1, 100);
+        };
+
+Using Lambda :
+Func<int> getRandomNumber = () => new Random().Next(1, 100);
+
+//Or 
+
+Func<int, int, int>  Sum  = (x, y) => x + y;
+
+===============================================================================================================
+// How to check for an existing data View and if one is available, use it rather than loading from Db via SQL
+// This is very much faster then reloading the data...
+===============================================================================================================
+
+	//Here we have a CollectionView declared in BankAccountViewModel that we update as neccessary from this program
+
+	   			if ( BankAccountViewModel . BankCollectionView != null )
+			{
+				if ( BankAccountViewModel . BankCollectionView . IsEmpty == false )
+				{
+					BankviewerView = BankAccountViewModel . BankCollectionView;
+					}
+					else
+					{
+						** load from SQL
+						BankViewcollection = e . DataSource as BankCollection;
+						// Get the View for this Db collection
+						BankviewerView = CollectionViewSource . GetDefaultView ( BankViewcollection );
+						//Add this View to our Views Collection - WORKS !!!
+						BankAccountViewModel . BankCollectionView = BankviewerView;
+					}
+
+===============================================================================================================
+// This STOPS all those infuriating "Failed Binding"" debug messages from appearing
+===============================================================================================================
+	System . Diagnostics . PresentationTraceSources . DataBindingSource . Switch . Level = System . Diagnostics . SourceLevels . Critical;
+
+===============================================================================================================
+//How  to Implement Filtering on a Db Collection using the Filter provided by the CollectionView 
+===============================================================================================================
+// This can be used to implement the classic "Data Changes" as you type into a field
+
+// Initial Setup when we get the Db Datato create the View
+			
+			// Declare the CollectionView
+			public CollectionView TestBankviewerView { get; set; }
+
+			// Once we have the data available :
+			// Get the default Collections View as our default ItemSource () (TestBankCollection is a CollectionView)
+
+			TestBankcollection = e .DataSource as TestBankCollection;
+			TestBankviewerView = CollectionViewSource .GetDefaultView ( TestBankcollection ) as CollectionView;
+			//Assign Collection to the datagrid
+			this .BankGrid .ItemsSource = TestBankcollection;
+			//Set the fillter we want up
+			TestBankviewerView .Filter = new Predicate<object> ( ( obj ) => FilterBankData ( obj as BankAccountViewModel ) );
+			// Clear DataGrid down and assign new (Filtered) data to it
+			this .BankGrid .ItemsSource = null;
+			this .BankGrid .Items .Clear ( );
+			this .BankGrid .ItemsSource = TestBankviewerView;
+			// Filtering completed
+
+		//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^//
+		// THESE TWO FUNCTIONS LIVE TOGETHER AND HANDLE FILTERING OF A COLLECTION VIEW
+
+		/// <summary>
+		/// This is the CRUCIAL method that updates the grid whenever we change its content
+		/// which changes the content of the CollectonView we have assigned to our DataGrid's ItemsSource
+		/// so we just Refresh() of the CollectionView to update the grid with JUST the  data matching our filter condition
+
+		It is triggered by setting the TextBox Property TextChanged="filter_TextChanged"
+
+		private void filter_TextChanged ( object sender , TextChangedEventArgs e )
+		{
+			if ( BankGrid .ItemsSource != null )
+				TestBankviewerView .Refresh ( );
+		}
+
+		/// <summary>
+		/// This is the Filter method logic to filter BankAccount CustNo into a Datagrid
+		/// This checks that the data in  the Collectionview ONLY matches if it Contains the text for the filter.Text field
+		/// but it can be as complex as you like as long as it returns a bool
+
+		private bool FilterBankData ( BankAccountViewModel bvm )
+		{
+			string input = bvm.CustNo.ToString();
+			string  srchtxt = filter .Text;
+			if ( bvm == null ) return false;
+			bool b = input.Contains(srchtxt );
+			return b;
+		}
+
+		// Now all data will comply with the condition set above
+
+===============================================================================================================
+// How to add  a Custom control to be found in a Custom Control Library (Remote method)
+===============================================================================================================
+
+xmlns:Analogclock="clr-namespace:MyAnalogClock;assembly=MyAnalogClock"  
+
+===============================================================================================================
+// How to add  a Custom control to be found in local project
+===============================================================================================================
+
+xmlns:analogclock="clr-namespace:WPFPages.Analogclock"
+
+===============================================================================================================
+//How to access template contents from C#
+// You can read values to store them in local variables using this method
+===============================================================================================================
+
+              public override void OnApplyTemplate ( )
+                {
+                        base . OnApplyTemplate ( );
+
+                        if ( Template != null )
+                        {
+                                var v = this . GetTemplateChild ( "RectBtn" );
+                        }
+
+				 UpdateStates(false); // Not sure what this does ?
+                        return;
+                }
+
+		    // HOW to Select a template - Maybe (works too)
+
+			CustomersDbDataTemplateSelector cdb = new CustomersDbDataTemplateSelector();
+			cdb.SelectTemplate(object o, Dependencyobject dp)
+
+			M$$ Example is :
+
+			public class TaskListDataTemplateSelector : DataTemplateSelector
+			{
+				public override DataTemplate SelectTemplate(object item, DependencyObject container)
+				{
+					FrameworkElement element = container as FrameworkElement;
+
+					// Task is the particular value to let you select the required Template element 
+					if (element != null && item != null && item is Task)
+					{
+					    Task taskitem = item as Task;
+
+					    if (taskitem.Priority == 1)
+						  return
+							element.FindResource("importantTaskTemplate") as DataTemplate;
+					    else
+						  return
+							element.FindResource("myTaskTemplate") as DataTemplate;
+					}
+
+					return null;
+				  }
+		    }
+
+		    To use this 
+		    We can then declare the TaskListDataTemplateSelector as a resource:
+
+			<Window.Resources>
+			<local:TaskListDataTemplateSelector x:Key="myDataTemplateSelector"/>
+			</Window.Resources>
+
+			and then in our xaml :
+
+			<ListBox Width="400" Margin="10"
+					ItemsSource="{Binding Source={StaticResource myTodoList}}"
+					ItemTemplateSelector="{StaticResource myDataTemplateSelector}">
+			</ListBox>
+
+===============================================================================================================
+// How to add standard Edit menu options to any menu
+===============================================================================================================
+
+             <MenuItem
+					Command="ApplicationCommands.Copy"
+                    CommandParameter="This is text to be copied"
+	                    Template="{StaticResource MenuItemCtrlTemplate1}"/>
+
+              <MenuItem
+					Command="ApplicationCommands.Paste"
+                    CommandParameter="This is text to be copied"
+	                   Template="{StaticResource MenuItemCtrlTemplate1}"/>
+
+					   etc..........
+
+===============================================================================================================
+// How to make a call using Dispatcher class ( This is for Menu commands as an example)
+// it calls a special STATIC class that holds ALL the actual functionality for all menu Commands
+===============================================================================================================
+
+			Dispatcher.Invoke( () => {
+				MenuCommands .Hello_Executed ( e .Parameter );
+					});
+
+		or
+
+		//Dispatcher . BeginInvoke ( new Action ( ( ) =>
+        //{
+                CollapseAllDrives ( );
+        //} ) , DispatcherPriority . ApplicationIdle );
+ 
+===============================================================================================================
+// How to use my DataGrid "Styles" with any DataGrid
+===============================================================================================================
+
+//Bankaccount/Customer Db DATAGRID CUSTOMISATION
+//BankGrid styles etc are in "\DataGridStyles\BankDatagridStyleTemplate.xaml"
+//CustomerGrid styles etc are in "\DataGridStyles\CustomerDatagridStyleTemplate.xaml"
+//NorthWest Db styles etc are in "\DataGridStyles\NWStyleTemplate.xaml""
+
+//These provide a standard set of row colors for mouseover = no and mouseover = yes
+//for these type of datagrids
+
+//use this in datagrid properties :
+CellStyle="{StaticResource xxxtypeGridStyle}">
+
+===============================================================================================================
+// MENU CUSTOMISATON
+//How to use the Menu Attached Propertes in "MenuAttachedProperties.cs"
+===============================================================================================================
+
+      <Menu
+		Height="30"
+		HorizontalAlignment="Left"
+		HorizontalContentAlignment="Stretch"
+		local:MenuAttachedProperties.MenuItemSelectedBackground="{StaticResource Orange4}"
+		local:MenuAttachedProperties.MenuItemBackground="{StaticResource Red0}"
+		local:MenuAttachedProperties.MenuItemForeground="{StaticResource White0}"
+		local:MenuAttachedProperties.MenuItemSelectedForeground="{StaticResource Black0}"
+		local:MenuAttachedProperties.MenuFontSize="12"
+		local:MenuAttachedProperties.MenuFontWeight="Normal"
+		local:MenuAttachedProperties.MenuItemBorderColor="{StaticResource Blue2}"
+		local:MenuAttachedProperties.MenuItemBorderThickness="1"
+		local:MenuAttachedProperties.MenuItemHeight ="30"
+		local:MenuAttachedProperties.MenuItemMargin="2"
+		Background="Transparent"
+		Grid.Column="1" 
+		BorderThickness="3"
+		BorderBrush="{StaticResource Black1}"
+		Width="810">
+
+	//Add this the link to  the ControlTemplate (in "\Dicts\Menus.xaml") to each menuItems you want to be handled. 
+	Template="{StaticResource MenuItemCtrlTemplate1}"/>
+
+===============================================================================================================
+LISTBOX/LISTVIEW CUSTOMISATON - GLOBAL STYLE/TEMPLATE
+how to use my GLOBAL color control styles (in ListBoxColorAP.CS) and NWOrder/NWCustomer Db DataTemplates (in NWDataTemplates) with
+any ListBox/ListView in the system
+===============================================================================================================
+
+ Set these 2 properties in the LISTBOX section of the control declaration
+
+ItemContainerStyle="{DynamicResource ListBoxColorControlTemplate}"
+ItemTemplate="{StaticResource NwCustomersDataTemplate1}"
+Then the AP defines the following color control properties as AP's
+
+ Brush Background
+ Brush BackgroundColor 
+ double FontSize
+ double FontWeight
+ Brush Foreground 
+ double ItemHeight
+ Brush MouseoverBackground
+ Brush MouseoverForeground 
+ Brush MouseoverSelectedBackground
+ Brush MouseoverSelectedForeground
+ Brush SelectionBackground
+ Brush SelectionForeground
+ 
+===============================================================================================================
+// There are various generic DataTemplates in NWDataTemplates.xaml
+===============================================================================================================
+
+These are all For NorthWest Database
+Currently only Orders and Customers are defined.
+
+===============================================================================================================
+// how to access Attached properties
+===============================================================================================================
+
+Where AP is a seperate file located in the viewModels Folder (declared as "models" in the xaml file, 
+and is containing various Attached Properties such as 'test' used here.
+
+Method 1 :
+Text="{Binding (models:AP.test), RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}}"           
+
+Method 2 :
+Text="{Binding (local:AP.test), RelativeSource={RelativeSource TemplatedParent}}"
+
+=================================================
+And also how to set the AP value's from code Where AP is a seperate file 
+located in the viewModels Folder (declared as "models" in the xaml file, 
+               
+               models:AP.MouseoverForeground="{StaticResource Black0}"
+
+=================================================
+
+===============================================================================================================
+// how to control listbox/view/datagrid etc
+===============================================================================================================
+
+        <ListBox x:Name="lv1"
+                        SelectionMode="Single"
+                        ItemsSource="{Binding nwc}"
+                        SelectedItem="{Binding nwcustomer}"
+                        VirtualizingPanel.IsVirtualizing="True"
+                        
+                        // Important links ...in Resource section !
+                        ItemTemplate="{DynamicResource DataTemplate1}" 
+                        ItemContainerStyle="{DynamicResource ListBoxItemStyle1}">
+                        />
+
+                        eg:
+        <Style x:Key="ListBoxItemStyle1" TargetType="{x:Type ListBoxItem}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                    <Border x:Name="Bd" SnapsToDevicePixels="true">
+                                          
+                                          <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                          <MultiTrigger>
+                                                <MultiTrigger.Conditions>
+                                                      <Condition Property="IsMouseOver" Value="False"/>
+                                                </MultiTrigger.Conditions>
+                                                <Setter Property="Background" TargetName="Bd" Value="{StaticResource Blue6}"/>
+                                          </MultiTrigger>
+                                 </ControlTemplate.Triggers>
+                                 more ....
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+===============================================================================================================
+// How to pass a Dp or other variable/property value  as a parameter to a converter by adding XPath=property to the converter clause
+===============================================================================================================
+
+Height="{Binding Height, ElementName=Innergrid, Converter={StaticResource AddTopOffset}, XPath=TextTopMargin}"
+
+===============================================================================================================
+// How to call a converter from c#
+===============================================================================================================
+
+			//Converter name is SetTextTopOffset 
+			SetTextTopOffset conv = new SetTextTopOffset ( );
+			Thickness t = ButtonText . Margin; 
+			t.Top =Convert.ToInt32(conv . Convert ( t.Top, typeof(int), TextTopMargin, CultureInfo.CurrentCulture ));
+			ButtonText . Margin = t;
+
+===============================================================================================================
+/// How to pass a click event thru to end user of any UserControl
+===============================================================================================================
+            // Host window
+		// Must declare the event
+            public event RoutedEventHandler Click;
+
+		//Setup handler in parent window to handle click event  from UserControl
+		Click += new RoutedEventHandler ( Threedbtn_Click );
+
+            private void OnClick ( object sender, MouseButtonEventArgs e )
+            {
+                    if ( this . Click != null )
+                    {
+                            this . Click ( this, e );
+                    }
+            }
+
+		// In the usercontrol, add this code :
+		 public event RoutedEventHandler Click;                
+             
+		 // This passes the Click event (from ThreeDeeBtnControl) on to user windows
+                private void OnButtonClick ( object sender, RoutedEventArgs e )
+                {
+                        if ( this . Click != null )
+                        {
+                                this . Click ( this, e );
+                        }
+                }
+
+		   and call it from the Click= property of the button or why.
+
+===============================================================================================================
+// How to access main dependencies reliably
+===============================================================================================================
+
+ScaleX="{Binding TextWidthScale, RelativeSource={RelativeSource FindAncestor,	AncestorType=local:ThreeDeeBtnControl}}"/>
+
+===============================================================================================================
+// How  to use transform....
+===============================================================================================================
+
+								<Rectangle
+										Height="44"  Width="120" 
+										Canvas.Left="290" 
+										Canvas.Top="32" 
+										Fill="{StaticResource Red3}">
+										<Rectangle.RenderTransform>
+											<TransformGroup>
+												<ScaleTransform/>
+												<SkewTransform x:Name="TestSkew" AngleX="15" AngleY="5"/>
+												<RotateTransform x:Name="testRotate" Angle="10"/>
+												<TranslateTransform x:Name="TestTranslate" X="12" Y="23"/>
+											</TransformGroup>
+										</Rectangle.RenderTransform>
+										<Rectangle.Style>
+											<Style TargetType="Rectangle">
+												<Style.Triggers>
+													<Trigger Property="IsMouseOver" Value="True">
+														<Setter Property="Opacity" Value="0.35"/>
+													</Trigger>
+
+												</Style.Triggers>
+											</Style>
+										</Rectangle.Style>
+
+									</Rectangle>
+
+===============================================================================================================
+// how to modify any control in line in XAML
+===============================================================================================================
+
+		<xxxControl.Style>
+				<Style TargetType="Rectangle">
+					<Style.Triggers>
+						<Trigger Property="IsMouseOver" Value="True">
+							<Setter Property="Opacity" Value="0.35"/>
+						</Trigger>
+					</Style.Triggers>
+				</Style>
+			</Rectangle.Style>
+
+			//You can use this format almost anywhere to change any Dependency Poperty
+//			SetValue ( $$owner$$.BtnTextProperty, "here ya go !" );
+
+/Allows control to Override default properties, & lets DP objects be inherited
+OverridesDefaultStyle=True
+
+===============================================================================================================
+// Set up a data context pointing to Bank data for our Listview i the tab control-->
+can be used most anywhere in XAML code
+===============================================================================================================
+
+<Canvas.DataContext>
+	<datamodel:BankAccountViewModel/>
+</Canvas.DataContext>
+
+===============================================================================================================
+// How to pass value parameters to a Multi Converter, so ThreeDeeBtnControl is accessible in the Converter-->
+===============================================================================================================
+			<local:ThreeDeeBtnControl.Width>
+				<MultiBinding Converter="{StaticResource WidthMultiConverter}">
+					// Important : This line passes the  current object to the converter
+					<Binding />
+					<Binding Path="TextSize" ElementName="DisplayWindow"/>
+					<Binding Path="FontDecoration" ElementName="DisplayWindow"/>
+				</MultiBinding>
+			</local:ThreeDeeBtnControl.Width>
+
+			OR:
+
+			          <TextBlock.Text>
+                   <!--//THIS is how you can pass an object (BankAccountViewModel or theViewModel or whatever) to a converter ,
+                    so we can combine fields or whatever else we want to show
+                    NB SelectedAccount1 is received in [0]-->
+                <MultiBinding Converter="{StaticResource BankCombinerCustNoBankno}">
+                    <!--// provides total collection, which we might need, but NOT really here -->
+                    <!--<Binding RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=Window}" Path="DataContext.bvm" />-->
+
+                    <!--// provides direct pointer to  YieldWindowViewModel.SelectedAccount1, which is a BankAccountViewModel record-->
+                    <!--NB MUST use the DataContext prefix here...
+                    |||||NB SelectedAccount1 is received in [0]-->
+                    <Binding RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=Window}" Path="DataContext.SelectedAccount1" />
+                    <!--// provides direct pointer to  YieldWindowViewModel.SelectedAccount2, which is a BankAccountViewModel record, mostly it is null->
+                    NB SelectedAccount1 is received in [1]-->
+                    <Binding RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=Window}" Path="DataContext.SelectedAccount2" />
+
+                    <!--// provides a pointer to YieldWindowViewModel, which is the ViewModel & current DataContext
+                    NB SelectedAccount1 is received in [2]-->
+                    <Binding RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=Window}" Path="DataContext" />
+                    <!--// Also provides only a pointer to YieldWindowViewModel, which is the ViewModel & current DataContext
+                    NB SelectedAccount1 is received in [3]-->
+                    <Binding />
+                </MultiBinding>
+                </TextBlock.Text>
+
+
+===============================================================================================================
+//You can use this format almost anywhere to change a Dependency Poperty
+===============================================================================================================
+
+                 SetValue ( xxxxxxProperty, "here ya go !" );
+
+===============================================================================================================
+// How to access a DP in a converter
+===============================================================================================================
+            needs :
+            using System . Windows;
+            
+            DependencyObject dpo = new DependencyObject ( );
+            object  dobj = dpo . GetValue ( ImgButton . ImgWidthProperty );
+            double offset = System.Convert.ToDouble(dobj);
+
+
+===============================================================================================================
+// How to Sort data on multiple fields using the Linq
+===============================================================================================================
+
+                // This creates a Dictionary containing ONLY the fields specified in the 1st section
+            var Customers = NwCustomers6 . AsEnumerable ( ) . GroupBy ( d => new
+            {
+                    d . Country,
+                    d.City
+            } )
+            . Select ( gg => new
+            {
+                    Country = gg . Key . Country,
+                    _City = gg.Key.City,
+                    //pcode = gg.Key.PostalCode
+            })
+            . ToList ( );
+
+
+            // By here, I have a list of countries + Cities alone in no particular order
+            //so organise theentire Db into ordered sequence by Countries and then Cities
+
+            //Create new List<objects> for our sorted output
+            ObservableCollection<nwcustomer> NwCust = new ObservableCollection<nwcustomer> ( );
+
+            foreach ( var country in Customers )
+            {
+                    foreach ( var item in NwCustomers6 )
+                    {
+                            if ( item . Country == country . Country )
+                            {
+                                    foreach ( var city in item.Country)
+                                    {
+                                                        NwCust . Add ( item );
+                                                    //Debug . WriteLine ( $"{item . Country}, {item . City}, {item . CompanyName}" );
+                                    }
+                                }
+                    }
+            }
+                        
+            // We now have a list arranged by City's inside Country's
+
+===============================================================================================================
+// How   to bind items in c#
+===============================================================================================================
+
+        private void SetUpListbox ( )
+        {
+                this.Background = new SolidColorBrush (Colors.LightGray);
+                Binding binding = new Binding ( "Background" );
+                binding . Source = lbcontrol.Background;
+                lbcontrol . SetBinding ( BackgroundProperty, binding );
+
+                this . Foreground = new SolidColorBrush ( Colors . Black );
+                Binding binding2 = new Binding ( "Foreground" );
+                binding2 . Source = lbcontrol . Foreground;
+                lbcontrol . SetBinding ( ForegroundProperty, binding2 );
+        }
+
+===============================================================================================================
+
+

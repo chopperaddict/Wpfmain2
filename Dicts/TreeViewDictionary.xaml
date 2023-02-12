@@ -1,0 +1,746 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+                    xmlns:local="clr-namespace:Views" >
+
+    <!--#region colors for treeview style-->
+    <!--Control colors.-->
+    <Color x:Key="WindowColor">#FFE8EDF9</Color>
+    <Color x:Key="ContentAreaColorLight">#FFC5CBF9</Color>
+    <Color x:Key="ContentAreaColorDark">#FF7381F9</Color>
+    <Color x:Key="DisabledControlLightColor">#FFE8EDF9</Color>
+    <Color x:Key="DisabledControlDarkColor">#FFC5CBF9</Color>
+    <Color x:Key="DisabledForegroundColor">#FF888888</Color>
+    <Color x:Key="SelectedBackgroundColor">#FFC5CBF9</Color>
+    <Color x:Key="SelectedUnfocusedColor">#FFDDDDDD</Color>
+    <Color x:Key="ControlLightColor">White</Color>
+    <Color x:Key="ControlMediumColor">#FF7381F9</Color>
+    <Color x:Key="ControlDarkColor">#FF211AA9</Color>
+    <Color x:Key="ControlMouseOverColor">#FF3843C4</Color>
+    <Color x:Key="ControlPressedColor">#FF211AA9</Color>
+
+    <!--<Color x:Key="GlyphColor">#FF444444</Color>-->
+    <Color x:Key="GlyphMouseOver">sc#1, 0.004391443, 0.002428215, 0.242281124</Color>
+    <!--Border colors-->
+    <Color x:Key="BorderLightColor">#FFCCCCCC</Color>
+    <Color x:Key="BorderMediumColor">#FF888888</Color>
+    <Color x:Key="BorderDarkColor">#FF444444</Color>
+    <Color x:Key="PressedBorderLightColor">#FF888888</Color>
+    <Color x:Key="PressedBorderDarkColor">#FF444444</Color>
+    <Color x:Key="DisabledBorderLightColor">#FFAAAAAA</Color>
+    <Color x:Key="DisabledBorderDarkColor">#FF888888</Color>
+    <Color x:Key="DefaultBorderBrushDarkColor">Black</Color>
+    <!--Control-specific resources.-->
+    <Color x:Key="HeaderTopColor">#FFC5CBF9</Color>
+    <Color x:Key="DatagridCurrentCellBorderColor">Black</Color>
+    <Color x:Key="SliderTrackDarkColor">#FFC5CBF9</Color>
+    <Color x:Key="NavButtonFrameColor">#FF3843C4</Color>
+    
+    <LinearGradientBrush x:Key="MenuPopupBrush" EndPoint="0.5,1" StartPoint="0.5,0">
+        <GradientStop Color="{DynamicResource ControlLightColor}" Offset="0" />
+        <GradientStop Color="{DynamicResource ControlMediumColor}" Offset="0.5" />
+        <GradientStop Color="{DynamicResource ControlLightColor}" Offset="1" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="ProgressBarIndicatorAnimatedFill" StartPoint="0,0" EndPoint="1,0">
+        <LinearGradientBrush.GradientStops>
+            <GradientStopCollection>
+                <GradientStop Color="#000000FF" Offset="0" />
+                <GradientStop Color="#600000FF" Offset="0.4" />
+                <GradientStop Color="#600000FF" Offset="0.6" />
+                <GradientStop Color="#000000FF" Offset="1" />
+            </GradientStopCollection>
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+
+    <!--#endregion colors for treeview style-->
+    <!--This is master style for treeview showing Drive information-->
+    
+    <!--#region Treeview Drive  viewer style-->
+    <!--<Style x:Key="{x:Type TreeView}" TargetType="TreeView">-->
+    <Style x:Key="TreeViewItemMainStyle" TargetType="{x:Type TreeView}">
+        <Setter Property="OverridesDefaultStyle" Value="True" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Visible" />
+         <!--<EventSetter Event="RequestBringIntoView" Handler="TreeViewItem_RequestBringIntoView"/>-->
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TreeView">
+                    <Border x:Name="XBorder" 
+                            CornerRadius="0" 
+                            BorderThickness="0" 
+                            Background="{TemplateBinding Background}"
+                                                Width="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType={x:Type TreeViewItem}}}">
+                        <Border.BorderBrush>
+                            <SolidColorBrush Color="{DynamicResource BorderMediumColor}" />
+                        </Border.BorderBrush>
+                        <!--<Border.Background>
+                                                <SolidColorBrush Color="{DynamicResource ControlLightColor}" />
+                                            </Border.Background>-->
+                        <ScrollViewer Focusable="False" CanContentScroll="False" Padding="0" Background="Transparent">
+                            <ItemsPresenter  />
+                        </ScrollViewer>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        
+    </Style>
+
+    <Style x:Key="ExpandCollapseToggleStyle" TargetType="ToggleButton">
+        <Setter Property="Focusable" Value="True" />
+        <!--<Setter Property="Focusable" Value="False" />-->
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ToggleButton">
+                    <Grid Width="15" Height="13" Background="Transparent">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CheckStates">
+                                <VisualState x:Name="Checked">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="Collapsed">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Hidden}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="Expanded">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Unchecked" />
+                                <VisualState x:Name="Indeterminate" />
+                            </VisualStateGroup>
+
+                            <!--Expand icons-->
+                        </VisualStateManager.VisualStateGroups>
+                        <!--Data="M 4 0 L 8 4 L 4 8 Z">-->
+                        <Path x:Name="Collapsed"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                Margin="1,1,1,1"
+                                Data="M 6 0 L 12 6 L 6 12 Z"                              
+                                Visibility="Hidden">
+                            <Path.Fill>
+                                <SolidColorBrush Color="Red" />
+                            </Path.Fill>
+                        </Path>
+                        <!--Data="M 0 4 L 8 4 L 4 8 Z"-->
+                        <Path x:Name="Expanded"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                Margin="1,1,1,1"
+                                Data="M 0  6 L 14 6  L 6 14 Z"
+                                Visibility="Visible">
+                            <Path.Fill>
+                                <SolidColorBrush Color="{StaticResource ClrBlue3}" />
+                            </Path.Fill>
+                        </Path>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--// Used  by Style below ...-->
+    <Style x:Key="TreeViewItemFocusVisual">
+        <Setter Property="Control.Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Border Name="border">
+                        <Rectangle Margin="0,0,0,0"
+                                                     StrokeThickness="5"
+                                                     Stroke="Black"
+                                                     StrokeDashArray="1 2"
+                                                     Opacity="0" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--<Style x:Key="TreeViewItems" TargetType="{x:Type TreeViewItem}">-->
+    
+    <!--//################################//-->
+    <!--#region MAIN Style for TreeView-->
+    
+        <Style x:Key="{x:Type TreeViewItem}" TargetType="{x:Type TreeViewItem}" >
+            <!--<Setter Property="Background" Value="Transparent" />-->
+
+        <!--ITEM BACKGROUND-->
+        <Setter Property="Background" Value="{Binding Border}" />
+        <Setter Property="HorizontalContentAlignment" Value="{Binding Path=HorizontalContentAlignment,
+                                    RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
+        <Setter Property="VerticalContentAlignment" Value="{Binding Path=VerticalContentAlignment,
+                                    RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
+        <Setter Property="Padding" Value="1,0,0,0" />
+        <!--<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />-->
+
+        <!--//ITEM FOREGROUND-->
+        <!--<Setter Property="Foreground" Value="{StaticResource Red2}" />-->
+        <!--<Setter Property="FocusVisualStyle" Value="{StaticResource TreeViewItemFocusVisual}" />-->
+        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+        <!--<Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type TreeViewItem}" >
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            --><!--<ColumnDefinition MinWidth="19" Width="{Binding ActualWidth, ElementName=Border}" />--><!--
+                            <ColumnDefinition MinWidth="19" Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        
+                        <VisualStateManager.VisualStateGroups>
+                            
+                            <VisualStateGroup x:Name="SelectionStates">
+
+                                --><!--HANDLES SELECTED ITEM BACKGROUND COLOR--><!--
+                                <VisualState x:Name="Selected">
+                                    <Storyboard>
+                                        --><!--<ColorAnimationUsingKeyFrames Storyboard.TargetName="Bd"
+                                                                Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)">
+                                            <EasingColorKeyFrame KeyTime="0" Value="{StaticResource ClrBlue0}" />
+                                        </ColorAnimationUsingKeyFrames>-->
+                                        <!--<ColorAnimationUsingKeyFrames Storyboard.TargetName="PART_Header"
+                                                                Storyboard.TargetProperty="(ItemsPresenter.Foreground).(SolidColorBrush.Color)">
+                                            <EasingColorKeyFrame KeyTime="0" Value="{StaticResource ClrWhite0}" />
+                                        </ColorAnimationUsingKeyFrames>--><!--
+                                    </Storyboard>
+                                </VisualState>
+
+                                <VisualState x:Name="Unselected" />
+
+                                <VisualState x:Name="SelectedInactive">
+                                    --><!--<Storyboard>
+                                        <ColorAnimationUsingKeyFrames Storyboard.TargetName="Bd"
+                                                                Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)">
+                                            <EasingColorKeyFrame KeyTime="0" Value="{StaticResource ClrBlue0}" />
+                                        </ColorAnimationUsingKeyFrames>
+                                    </Storyboard>--><!--
+                                </VisualState>
+                            </VisualStateGroup>
+                            
+                            <VisualStateGroup x:Name="ExpansionStates">
+                                <VisualState x:Name="Expanded">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)"
+                                                                    Storyboard.TargetName="ItemsHost">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Collapsed" />
+                            </VisualStateGroup>
+                            
+                        </VisualStateManager.VisualStateGroups>
+                        
+                        <ToggleButton x:Name="Expander"
+                                                    Style="{StaticResource ExpandCollapseToggleStyle}" ClickMode="Press" 
+                                                          IsChecked="{Binding IsExpanded, RelativeSource={RelativeSource TemplatedParent}}"/>
+                        --><!--<StackPanel Orientation="Horizontal">--><!--
+                        <Image x:Name="itemimage" Grid.Column="0" Source="{Binding}" Width="25" Height="25" Margin="8 0 10 0" />
+                            <Border x:Name="Bd"
+                                                      Grid.Column="1"
+                                                      Background="{TemplateBinding Background}"
+                                                      BorderBrush="{TemplateBinding BorderBrush}"
+                                                      BorderThickness="{TemplateBinding BorderThickness}"
+                                                      Padding="{TemplateBinding Padding}">
+                                        <ContentPresenter x:Name="PART_Header"
+                                                      ContentSource="Header"
+                                                     TextElement.FontWeight="Normal"
+                                                      HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"/>
+                            </Border>
+                        --><!--</StackPanel>--><!--
+                        <ItemsPresenter x:Name="ItemsHost"
+                                                  Grid.Row="1"
+                                                  Grid.Column="1"
+                                                  Grid.ColumnSpan="2"
+                                                  Visibility="Collapsed" />
+                    </Grid>
+
+                    --><!--//################################//-->
+                    <!--#region TreeViewItem Triggers--><!--
+                    
+                    <ControlTemplate.Triggers>
+                        --><!--<Trigger Property="HasItems" Value="false">
+                            <Setter TargetName="Expander" Property="Visibility" Value="Hidden" />
+                            </Trigger>-->
+
+                        
+                        <!--***************  START ************-->
+
+                              <!--###########################-->
+                        <!--#region NO ITEMS-->
+                        <!--###########################-->
+
+                        <!-- NOT SELECTED , HAS ITEMS, NOT EXPANDED, MOUSEOVER!!--><!--
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsSelected" Value="false" />
+                                <Condition Property="HasItems" Value="true" />
+                                <Condition Property="IsExpanded" Value="false" />
+                                <Condition Property="IsMouseOver" Value="true" />
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Background" Value="{StaticResource Green8}"/>
+                            <Setter TargetName="PART_Header" Property="Control.Foreground" Value="{StaticResource Black0}"/>
+                            <Setter TargetName="itemimage" Property="Source" Value="\Icons\folderwithdocs.png" />
+                            <Setter TargetName="itemimage" Property="Height" Value="20" />
+                            <Setter TargetName="itemimage" Property="Width" Value="35" />
+                            <Setter TargetName="itemimage" Property="Margin" Value="-2 0 0 0" />
+                            <Setter TargetName="PART_Header" Property="Margin" Value="5 0 0 0"/>
+                            <Setter TargetName="PART_Header" Property="TextElement.FontWeight" Value="SemiBold"/>
+                            <Setter TargetName="Expander" Property="Visibility" Value="Hidden" />
+                        </MultiTrigger>
+
+
+                        --><!--SELECTED, NO ITEMS, MOUSEOVER:  !!--><!--
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsSelected" Value="true" />
+                                <Condition Property="HasItems" Value="false" />
+                                <Condition Property="IsMouseOver" Value="true" />
+                                --><!--<Condition Property="IsExpanded" Value="NOT USED" />--><!--
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="PART_Header" Property="Control.Foreground" Value="{StaticResource Red5}" />
+                            <Setter Property="Background" Value="{StaticResource Yellow1}" />
+                            <Setter TargetName="PART_Header" Property="Opacity" Value="1" />
+                            <Setter TargetName="Expander" Property="Visibility" Value="Hidden" />
+                            <Setter TargetName="itemimage" Property="Source" Value="\Icons\docs.ico" />
+                            <Setter TargetName="itemimage" Property="Height" Value="20" />
+                            <Setter TargetName="itemimage" Property="Width" Value="20" />
+                            <Setter TargetName="Expander" Property="Visibility" Value="Hidden" />
+                        </MultiTrigger>
+
+                        --><!--SELECTED, NO ITEMS, NO MOUSE:  !!--><!--
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsSelected" Value="true" />
+                                <Condition Property="HasItems" Value="false" />
+                                <Condition Property="IsMouseOver" Value="false" />
+                                --><!--<Condition Property="IsExpanded" Value="NOT USED" />--><!--
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="PART_Header" Property="Control.Foreground" Value="{StaticResource Black0}" />
+                            <Setter TargetName="PART_Header" Property="Opacity" Value="1" />
+                            <Setter Property="Background" Value="{StaticResource Yellow1}" />
+                            <Setter TargetName="Expander" Property="Visibility" Value="Hidden" />
+                            <Setter TargetName="itemimage" Property="Source" Value="\Icons\docs.ico" />
+                            <Setter TargetName="itemimage" Property="Height" Value="20" />
+                            <Setter TargetName="itemimage" Property="Width" Value="20" />
+                            <Setter TargetName="Expander" Property="Visibility" Value="Hidden" />
+                        </MultiTrigger>
+
+                        --><!--NOT SELECTED, NO ITEMS, NO MOUSE:   Normal listed item !!--><!--
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsSelected" Value="false" />
+                                <Condition Property="HasItems" Value="false" />
+                                <Condition Property="IsMouseOver" Value="false" />
+                                --><!--<Condition Property="IsExpanded" Value="NOT USED" />--><!--
+                            </MultiTrigger.Conditions>
+                            --><!--This lets us  use the Treeview's specified background color for all non colored objects--><!--
+                            <Setter Property="Background" Value="{Binding Path=Background,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type TreeView}}}"/>
+                            --><!--This lets us  use the Treeview's specified foreground color for all non colored objects--><!--
+                            <Setter Property="Control.Foreground" Value="{Binding Path=Foreground,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type TreeView}}}"/>
+                            --><!--<Setter TargetName="PART_Header" Property="Control.Foreground" Value="{StaticResource Blue3}" />--><!--
+                            <Setter TargetName="PART_Header" Property="Opacity" Value="1" />
+                            <Setter TargetName="itemimage" Property="Source" Value="\Icons\TextFile.png" />
+                            <Setter TargetName="itemimage" Property="Height" Value="20" />
+                            <Setter TargetName="itemimage" Property="Width" Value="20" />
+                            <Setter TargetName="Expander" Property="Visibility" Value="Hidden" />
+                        </MultiTrigger>
+
+                        --><!--NOT SELECTED, NO ITEMS, MOUSE OVER:   --><!--
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsSelected" Value="false" />
+                                <Condition Property="HasItems" Value="false" />
+                                <Condition Property="IsMouseOver" Value="true" />
+                            </MultiTrigger.Conditions>
+                            --><!--This lets us  use the Treeview's specified background color for all non colored objects--><!--
+                            <Setter Property="Background" Value="{Binding Path=Background,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type TreeView}}}"/>
+                            --><!--This lets us  use the Treeview's specified foreground color for all non colored objects--><!--
+                            <Setter Property="Control.Foreground" Value="{Binding Path=Foreground,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type TreeView}}}"/>
+                            --><!--<Setter TargetName="PART_Header" Property="Control.Foreground" Value="{StaticResource Blue3}" />--><!--
+                            <Setter TargetName="PART_Header" Property="Opacity" Value="1" />
+                            <Setter TargetName="PART_Header" Property="TextElement.FontWeight" Value="DemiBold" />
+                            --><!--<Setter TargetName="PART_Header" Property="Margin" Value="-25 0 0 0" />--><!--
+                            <Setter TargetName="itemimage" Property="Source" Value="\Icons\blackYellow document.png" />
+                            <Setter TargetName="itemimage" Property="Height" Value="20" />
+                            <Setter TargetName="itemimage" Property="Width" Value="20" />
+                            <Setter TargetName="Expander" Property="Visibility" Value="Hidden" />
+                        </MultiTrigger>
+
+                        --><!--###########################-->
+                        <!--#endregion NO ITEMS-->
+                        <!--###########################-->
+
+                        <!--###########################-->
+                         <!--#region HAS  ITEMS-->
+                        <!--###########################-->
+
+                        <!--THIS ONE CONTROLS THE SELECTED TYPE BACKGROUND & FOREGROUND CORRECTLY-->
+                        <!--SELECTED, HAS ITEMS, NOT EXPANDED, NO MOUSE : !!--><!--
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsSelected" Value="true" />
+                                <Condition Property="HasItems" Value="true" />
+                                <Condition Property="IsExpanded" Value="false" />
+                                <Condition Property="IsMouseOver" Value="false" />
+                                --><!--<Condition Property="Width" Value="Auto" />--><!--
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Background" Value="{StaticResource Blue2}" />
+                            <Setter TargetName="PART_Header" Property="Control.Foreground" Value="{StaticResource Yellow0}" />
+                            <Setter TargetName="itemimage" Property="Source" Value="\Icons\blue folder open.png" />
+                            <Setter TargetName="itemimage" Property="Height" Value="20" />
+                            <Setter TargetName="itemimage" Property="Width" Value="20" />
+                            <Setter TargetName="Expander" Property="Visibility" Value="Hidden" />
+                        </MultiTrigger>
+
+                        --><!--THIS ONE CONTROLS THE SELECTED TYPE BACKGROUND & FOREGROUND CORRECTLY-->
+                        <!--SELECTED, HAS ITEMS, , NOT EXPANDED, MOUSEOVER : !!--><!--
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsSelected" Value="true" />
+                                <Condition Property="HasItems" Value="true" />
+                                <Condition Property="IsExpanded" Value="false" />
+                                <Condition Property="IsMouseOver" Value="true" />
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Background" Value="{StaticResource Black0}" />
+                            <Setter TargetName="PART_Header" Property="Control.Foreground" Value="{StaticResource Yellow0}" />
+                            <Setter TargetName="itemimage" Property="Source" Value="\Icons\blue folder open.png" />
+                            <Setter TargetName="itemimage" Property="Height" Value="20" />
+                            <Setter TargetName="itemimage" Property="Width" Value="20" />
+                            <Setter TargetName="Expander" Property="Visibility" Value="Hidden" />
+                        </MultiTrigger>
+
+                        --><!--HAS  ITEMS-->
+                        <!--NOT SELECTED , HAS ITEMS, IS EXPANDED, NO MOUSE -Anytime !!-->
+
+                        <!--NO MOUSE : WORKING  HasItems + IsSelected - NO mouseover!!-->
+                        <!--NOT SELECTED, HAS ITEMS, NOT EXPANDED, NO MOUSE  !!--><!--
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsSelected" Value="false" />
+                                <Condition Property="HasItems" Value="true" />
+                                <Condition Property="IsExpanded" Value="false" />
+                                <Condition Property="IsMouseOver" Value="false" />
+                            </MultiTrigger.Conditions>
+                            --><!--This lets us  use the Treeview's specified background color for all non colored objects--><!--
+                            <Setter Property="Background" Value="{Binding Path=Background,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type TreeView}}}"/>
+                            <Setter TargetName="PART_Header" Property="Control.Foreground" Value="{StaticResource Black0}" />
+                            <Setter TargetName="PART_Header" Property="Control.FontWeight" Value="SemiBold" />
+                            <Setter TargetName="itemimage" Property="Source" Value="\Icons\folder.gif" />
+                            <Setter TargetName="itemimage" Property="Height" Value="20" />
+                            <Setter TargetName="itemimage" Property="Width" Value="20" />
+                            <Setter TargetName="Expander" Property="Visibility" Value="Hidden" />
+                        </MultiTrigger>
+
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsSelected" Value="false" />
+                                <Condition Property="HasItems" Value="true" />
+                                <Condition Property="IsExpanded" Value="true" />
+                                <Condition Property="IsMouseOver" Value="false" />
+                                --><!--<Condition Property="Width" Value="Auto" />--><!--
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Background" Value="{StaticResource White4}" />
+                            <Setter TargetName="PART_Header" Property="Control.Foreground" Value="{StaticResource Blue2}" />
+                            <Setter TargetName="itemimage" Property="Source" Value="\Icons\folderwithdocs.png" />
+                            <Setter TargetName="itemimage" Property="Height" Value="20" />
+                            <Setter TargetName="itemimage" Property="Width" Value="20" />
+                            <Setter TargetName="Expander" Property="Visibility" Value="Hidden" />
+                        </MultiTrigger>
+
+                        --><!--NOT SELECTED , HAS ITEMS, IS EXPANDED, MOUSEOVER!!--><!--
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsSelected" Value="false" />
+                                <Condition Property="HasItems" Value="true" />
+                                <Condition Property="IsExpanded" Value="true" />
+                                <Condition Property="IsMouseOver" Value="true" />
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Background" Value="{StaticResource Red5}" />
+                            <Setter TargetName="PART_Header" Property="Control.Foreground" Value="{StaticResource Yellow1}" />
+                            <Setter TargetName="itemimage" Property="Source" Value="\Icons\folder-open.png" />
+                            <Setter TargetName="itemimage" Property="Height" Value="20" />
+                            <Setter TargetName="itemimage" Property="Width" Value="20" />
+                            <Setter TargetName="Expander" Property="Visibility" Value="Hidden" />
+                        </MultiTrigger>
+                        
+                        
+                        
+                        
+
+                        --><!--SELECTED , HAS ITEMS, IS EXPANDED, MOUSEOVER!!--><!--
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsSelected" Value="True" />
+                                <Condition Property="HasItems" Value="true" />
+                                <Condition Property="IsExpanded" Value="true" />
+                                <Condition Property="IsMouseOver" Value="true" />
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Background" Value="{StaticResource Red5}" />
+                            <Setter TargetName="PART_Header" Property="Control.Foreground" Value="{StaticResource White0}" />
+                            <Setter TargetName="itemimage" Property="Source" Value="\Icons\folder-open.png" />
+                        </MultiTrigger>-->
+
+                        
+                        
+                        
+                        
+                        
+                             <!--HAS  ITEMS-->
+                        <!-- NOt SELECTED, HAS ITEMS,  EXPANDED, MOUSEOVER !!--><!--
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsSelected" Value="true" />
+                                <Condition Property="HasItems" Value="true" />
+                                <Condition Property="IsExpanded" Value="true" />
+                                <Condition Property="IsMouseOver" Value="true" />
+                                --><!--<Condition Property="IsFocused" Value="true" />-->
+                                <!--<Condition Property="Width" Value="Auto" />--><!--
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Background" Value="{StaticResource White0}" />
+                            <Setter TargetName="PART_Header" Property="Control.Foreground" Value="{StaticResource Red4}" />
+                            <Setter TargetName="itemimage" Property="Source" Value="\Icons\blackcross.png" />
+                            <Setter TargetName="itemimage" Property="Height" Value="20" />
+                            <Setter TargetName="itemimage" Property="Width" Value="20" />
+                            <Setter TargetName="PART_Header" Property="Margin" Value="0 0 0 0"/>
+                            <Setter TargetName="Expander" Property="Visibility" Value="Hidden" />
+                        </MultiTrigger>
+
+                        
+   
+                            --><!-- SELECTED, HAS ITEMS, NOT EXPANDED, MOUSEOVER !!-->
+                        <!--<MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsSelected" Value="true" />
+                                <Condition Property="HasItems" Value="true" />
+                                <Condition Property="IsExpanded" Value="false" />
+                                <Condition Property="IsMouseOver" Value="true" />
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Background" Value="{StaticResource Blue3}" />
+                            <Setter TargetName="PART_Header" Property="Control.Foreground" Value="{StaticResource White0}" />
+                            <Setter TargetName="itemimage" Property="Source" Value="\Icons\folder-open.png" />
+                            <Setter TargetName="itemimage" Property="Height" Value="20" />
+                            <Setter TargetName="itemimage" Property="Width" Value="20" />
+                        </MultiTrigger>-->
+
+                        <!--NOT SELECTED, HAS ITEMS, EXPANDED, NO MOUSE !!--><!--
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsSelected" Value="false" />
+                                <Condition Property="HasItems" Value="true" />
+                                <Condition Property="IsExpanded" Value="true" />
+                                <Condition Property="IsMouseOver" Value="false" />
+                                --><!--<Condition Property="Width" Value="Auto" />--><!--
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="PART_Header" Property="Control.Foreground" Value="{StaticResource   White0}" />
+                            <Setter Property="Background" Value="{StaticResource Red0}" />
+                            <Setter TargetName="itemimage" Property="Source" Value="\Icons\folder-open.png" />
+                            <Setter TargetName="itemimage" Property="Height" Value="20" />
+                            <Setter TargetName="itemimage" Property="Width" Value="20" />
+                            <Setter TargetName="Expander" Property="Visibility" Value="Hidden" />
+                        </MultiTrigger>
+
+                            --><!--NO MOUSE : WORKING  HasItems + IsSelected - NO mouseover!!-->
+                        <!--NO MOUSE : HAS ITEMS, EXPANDED, NOT SELECTED, !!--><!--
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsSelected" Value="false" />
+                                <Condition Property="HasItems" Value="True" />
+                                <Condition Property="IsMouseOver" Value="true" />
+                                <Condition Property="IsExpanded" Value="true" />
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="PART_Header" Property="Control.Foreground" Value="{StaticResource Yellow0}" />
+                            <Setter Property="Background" Value="{StaticResource Red5}" />
+                            <Setter TargetName="itemimage" Property="Source" Value="\Icons\folder-open.png" />
+                            <Setter TargetName="itemimage" Property="Height" Value="20" />
+                            <Setter TargetName="itemimage" Property="Width" Value="20" />
+                            <Setter TargetName="Expander" Property="Visibility" Value="Hidden" />
+                        </MultiTrigger>
+
+                        --><!--SELECTED , HAS ITEMS, IS EXPANDED, NO MOUSE!!--><!--
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsSelected" Value="True" />
+                                <Condition Property="HasItems" Value="true" />
+                                <Condition Property="IsExpanded" Value="true" />
+                                <Condition Property="IsMouseOver" Value="false" />
+                                --><!--<Condition Property="IsSelectedInactive" Value="true" />--><!--
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Background" Value="{StaticResource Black0}" />
+                            <Setter TargetName="PART_Header" Property="Control.Foreground" Value="{StaticResource Yellow0}" />
+                            <Setter TargetName="itemimage" Property="Source" Value="\Icons\blackcross.png" />
+                            <Setter TargetName="itemimage" Property="Height" Value="20" />
+                            <Setter TargetName="itemimage" Property="Width" Value="20" />
+                            <Setter TargetName="Expander" Property="Visibility" Value="Hidden" />
+                        </MultiTrigger>
+
+                         
+                        --><!--#end region HAS ITEMS--><!--
+
+                    </ControlTemplate.Triggers>
+                    
+                    --><!--#endregion TreeViewItem Triggers--><!--
+
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>-->
+    </Style>
+
+    <LinearGradientBrush x:Key="VerticalScrollBarBackground" EndPoint="1,0" StartPoint="0,0">
+        <GradientStop Color="#E1E1E1" Offset="0"/>
+        <GradientStop Color="#FFAE00A5" Offset="0.20"/>
+        <GradientStop Color="#FF8F00DB" Offset="0.80"/>
+        <GradientStop Color="#E3E3E3" Offset="1"/>
+    </LinearGradientBrush>
+    
+    <SolidColorBrush x:Key="ScrollBarDisabledBackground" Color="#F4F4F4"/>
+    <!--<Style x:Key="ScrollBarButton" TargetType="{x:Type RepeatButton}">
+        <Setter Property="OverridesDefaultStyle" Value="true"/>
+        <Setter Property="Focusable" Value="false"/>
+        <Setter Property="IsTabStop" Value="false"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type RepeatButton}">
+                    --><!--<Themes:ScrollChrome x:Name="Chrome" RenderMouseOver="{TemplateBinding IsMouseOver}" RenderPressed="{TemplateBinding IsPressed}" SnapsToDevicePixels="true"/>--><!--
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>-->
+    <!--<Style x:Key="VerticalScrollBarPageButton" TargetType="{x:Type RepeatButton}">
+        <Setter Property="OverridesDefaultStyle" Value="true"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Focusable" Value="false"/>
+        <Setter Property="IsTabStop" Value="false"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type RepeatButton}">
+                    <Rectangle Fill="{TemplateBinding Background}" Height="{TemplateBinding Height}" Width="{TemplateBinding Width}"/>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>-->
+    
+    <!--//colors  the button of the scrollbar (in listobx at least-->
+    <!--<Style x:Key="ScrollBarThumb" TargetType="{x:Type Thumb}">
+        <Setter Property="OverridesDefaultStyle" Value="true"/>
+        <Setter Property="IsTabStop" Value="false"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Thumb}">
+                    <Rectangle HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Fill="MediumSpringGreen" SnapsToDevicePixels="True"/>
+                    --><!--<Themes:ScrollChrome x:Name="Chrome" RenderMouseOver="{TemplateBinding IsMouseOver}" RenderPressed="{TemplateBinding IsDragging}" SnapsToDevicePixels="true" Themes:ScrollChrome.ScrollGlyph="{TemplateBinding Themes:ScrollChrome.ScrollGlyph}"/>--><!--
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>-->
+    
+    <!--<LinearGradientBrush x:Key="HorizontalScrollBarBackground" EndPoint="0,1" StartPoint="0,0">
+        <GradientStop Color="#E1E1E1" Offset="0"/>
+        <GradientStop Color="#EDEDED" Offset="0.20"/>
+        <GradientStop Color="#EDEDED" Offset="0.80"/>
+        <GradientStop Color="#E3E3E3" Offset="1"/>
+    </LinearGradientBrush>
+    <Style x:Key="HorizontalScrollBarPageButton" TargetType="{x:Type RepeatButton}">
+        <Setter Property="OverridesDefaultStyle" Value="true"/>
+        <Setter Property="Background" Value="SteelBlue"/>
+        <Setter Property="Focusable" Value="false"/>
+        <Setter Property="IsTabStop" Value="false"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type RepeatButton}">
+                    <Rectangle Fill="{StaticResource Orange3}" Height="{TemplateBinding Height}" Width="{TemplateBinding Width}"/>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>-->
+    
+    <!--<Style TargetType="{x:Type ScrollBar}">
+        <Setter Property="Background" Value="{StaticResource VerticalScrollBarBackground}"/>
+        <Setter Property="Stylus.IsPressAndHoldEnabled" Value="false"/>
+        <Setter Property="Stylus.IsFlicksEnabled" Value="false"/>
+        <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+        <Setter Property="Width" Value="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}"/>
+        <Setter Property="MinWidth" Value="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ScrollBar}">
+                    <Grid x:Name="Bg" Background="{TemplateBinding Background}" SnapsToDevicePixels="true">
+                        <Grid.RowDefinitions>
+                            <RowDefinition MaxHeight="{DynamicResource {x:Static SystemParameters.VerticalScrollBarButtonHeightKey}}"/>
+                            <RowDefinition Height="0.00001*"/>
+                            <RowDefinition MaxHeight="{DynamicResource {x:Static SystemParameters.VerticalScrollBarButtonHeightKey}}"/>
+                        </Grid.RowDefinitions>
+                        <RepeatButton Command="{x:Static ScrollBar.LineUpCommand}" IsEnabled="{TemplateBinding IsMouseOver}" Style="{StaticResource ScrollBarButton}" />
+                        <Track x:Name="PART_Track" IsDirectionReversed="true" IsEnabled="{TemplateBinding IsMouseOver}" Grid.Row="1">
+                            <Track.DecreaseRepeatButton>
+                                <RepeatButton Command="{x:Static ScrollBar.PageUpCommand}" Style="{StaticResource VerticalScrollBarPageButton}"/>
+                            </Track.DecreaseRepeatButton>
+                            <Track.IncreaseRepeatButton>
+                                <RepeatButton Command="{x:Static ScrollBar.PageDownCommand}" Style="{StaticResource VerticalScrollBarPageButton}"/>
+                            </Track.IncreaseRepeatButton>
+                            <Track.Thumb>
+                                <Thumb Style="{StaticResource ScrollBarThumb}" />
+                            </Track.Thumb>
+                        </Track>
+                        <RepeatButton Command="{x:Static ScrollBar.LineDownCommand}" IsEnabled="{TemplateBinding IsMouseOver}" Grid.Row="2" Style="{StaticResource ScrollBarButton}" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="Background" TargetName="Bg" Value="{StaticResource ScrollBarDisabledBackground}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="Orientation" Value="Horizontal">
+                <Setter Property="Width" Value="Auto"/>
+                <Setter Property="MinWidth" Value="0"/>
+                <Setter Property="Height" Value="{DynamicResource {x:Static SystemParameters.HorizontalScrollBarHeightKey}}"/>
+                <Setter Property="MinHeight" Value="{DynamicResource {x:Static SystemParameters.HorizontalScrollBarHeightKey}}"/>
+                <Setter Property="Background" Value="{StaticResource HorizontalScrollBarBackground}"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type ScrollBar}">
+                            --><!--<Grid x:Name="Bg" Background="{TemplateBinding Background}" SnapsToDevicePixels="true">--><!--
+                                <Grid x:Name="Bg" Background="{StaticResource Green1}" SnapsToDevicePixels="true">
+                                    <Grid.ColumnDefinitions>
+                                    <ColumnDefinition MaxWidth="{DynamicResource {x:Static SystemParameters.HorizontalScrollBarButtonWidthKey}}"/>
+                                    <ColumnDefinition Width="0.00001*"/>
+                                    <ColumnDefinition MaxWidth="{DynamicResource {x:Static SystemParameters.HorizontalScrollBarButtonWidthKey}}"/>
+                                </Grid.ColumnDefinitions>
+                                <RepeatButton Command="{x:Static ScrollBar.LineLeftCommand}" IsEnabled="{TemplateBinding IsMouseOver}" Style="{StaticResource ScrollBarButton}" />
+                                <Track x:Name="PART_Track" Grid.Column="1" IsEnabled="{TemplateBinding IsMouseOver}">
+                                    <Track.DecreaseRepeatButton>
+                                        <RepeatButton Command="{x:Static ScrollBar.PageLeftCommand}" Style="{StaticResource HorizontalScrollBarPageButton}"/>
+                                    </Track.DecreaseRepeatButton>
+                                    <Track.IncreaseRepeatButton>
+                                        <RepeatButton Command="{x:Static ScrollBar.PageRightCommand}" Style="{StaticResource HorizontalScrollBarPageButton}"/>
+                                    </Track.IncreaseRepeatButton>
+                                    <Track.Thumb>
+                                        <Thumb Style="{StaticResource ScrollBarThumb}" />
+                                    </Track.Thumb>
+                                </Track>
+                                <RepeatButton Grid.Column="2" Command="{x:Static ScrollBar.LineRightCommand}" IsEnabled="{TemplateBinding IsMouseOver}" Style="{StaticResource ScrollBarButton}" />
+                            </Grid>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsEnabled" Value="false">
+                                    <Setter Property="Background" TargetName="Bg" Value="{StaticResource ScrollBarDisabledBackground}"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+        </Style.Triggers>
+    </Style>-->
+    <!--#endregion MAIN Style for TreeView-->
+
+</ResourceDictionary>

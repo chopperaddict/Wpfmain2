@@ -1,0 +1,18 @@
+The Stored Procedures Window
+====================
+
+This window really is a Jekyll & Hyde window, providing complex (and very generic) funcionalty for working with both Sql Tables (from Microsoft SQL server) and also extensive access to ALL the Stored Procedures that may exist in your SQL server installation.
+
+Other help files will cover each of these areas in full detail, so right here I just want to explain briefly some of the more important benefits of using this system.
+
+SQ database tables
+----------------------
+The most powerful feature of this side of the Windows processing is the fact that it is able to open [ ALL and any accessible Db Tables ] in a special ""Internal" format that handles the fact that most tables will quiite naturally have many different names for the various data items (columns) of data they contain.  This can create mayhem for any application that wants to provide any form of access to these tables (more complex than just viewing them), including CRUD operations such as Add, Update, Delete, which means that internally the SQL code MUST of  course be able to refer to the correct column names for any table or CRUD operations will simply not work.
+
+This is why this system uses the specially designed hybrid column system, which is totally transparent to you as you work with the data.  The DataGrid columns are of course shown with the correct (real) column names, so that you will recognise what the data fields are if you happen  to be a user of SQL scripting in any form, or even if you just use the MSSQL SQL Server Management system to look at your data base files.
+
+Stored procedures
+---------------------
+In a similar manner, the Stored Procedures (henceforward called (SPs) for brevity) employs a similar generic system to access your (SPs) in an easy and standardized way.
+
+End of File : StoredProcsHelp.Txt
